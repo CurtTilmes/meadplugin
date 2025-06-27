@@ -4,8 +4,6 @@ import (
 	"context"
 	"fmt"
 	"time"
-
-	pb "github.com/CurtTilmes/meadplugin/internal/pb"
 )
 
 func init() {
@@ -18,11 +16,15 @@ func init() {
 	})
 }
 
-func evaluate(_ context.Context, params map[string]string) (response *pb.EvaluateResponse, err error) {
+func evaluate(_ context.Context, params map[string]string) (response *Response, err error) {
 	r := NewResponse()
 
 	if e := params["makeanerror"]; e != "" {
 		return nil, fmt.Errorf("some kind of error %q", e)
+	}
+
+	if params["panic"] != "" {
+		panic("Panic is fine too, it gets caught")
 	}
 
 	if params["skipthisone"] != "" {

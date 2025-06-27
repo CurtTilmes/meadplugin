@@ -3,6 +3,7 @@ package config
 import (
 	"log"
 	"os"
+	"regexp"
 
 	_ "github.com/joho/godotenv/autoload"
 	"gopkg.in/yaml.v3"
@@ -45,5 +46,10 @@ func init() {
 
 	if Config.Version == "" {
 		log.Fatalf("Must specify version in config")
+	}
+
+	r := regexp.MustCompile(`^\d+\.\d+\.\d+-\d+$`)
+	if !r.MatchString(Config.Version) {
+		log.Fatalf("Bad Version for %q", Config.Version)
 	}
 }
