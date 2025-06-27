@@ -6,7 +6,7 @@ option go_package = ".;meadplugin";
 
 package meadplugin;
 
-service meadrule {
+service meadplugin {
   rpc Identify (IdentifyRequest) returns (IdentifyResponse) {}
   rpc Evaluate (EvaluateRequest) returns (EvaluateResponse) {}
   rpc Insert (InsertRequest) returns (InsertResponse) {}
@@ -14,15 +14,14 @@ service meadrule {
 
 message EvaluateRequest {
   string rule_name = 1;
-  map<string,string> rule_params = 2;
-  map<string,string> job_params = 3;
+  map<string,string> params = 2;
 }
 
 enum RuleStatus {
   RULE_STATUS_UNSPECIFIED = 0;
-  RULE_STATUS_SUCCESS = 1;
-  RULE_STATUS_ERROR = 2;
-  RULE_STATUS_RETRY = 3;
+  RULE_STATUS_SUCCESS = 1; 
+  RULE_STATUS_SKIP = 2;    // Don't run this job
+  RULE_STATUS_RETRY = 3;   // Missing something, try again later
 }
 
 message EvaluateResponse {
@@ -35,23 +34,16 @@ message EvaluateResponse {
 message IdentifyRequest {
 }
 
-message Version {
-  uint32 version_major = 1;
-  uint32 version_minor = 2;
-  uint32 version_path = 3;
-  uint32 version_release = 4;
-}
-
 message Rule {
-  string rule_name = 1;
-  Version rule_version = 2;
+  string name = 1;
+  string version = 2;
   map<string,string> rule_params = 3;
-  map<string,string> job_params = 4;
+  repeated string job_params = 4;
 }
 
 message IdentifyResponse {
-  string plugin_name = 1;
-  Version plugin_version = 2;
+  string name = 1;
+  string version = 2;
   repeated Rule rules = 3;
 }
 

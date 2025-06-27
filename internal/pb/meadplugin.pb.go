@@ -27,8 +27,8 @@ type RuleStatus int32
 const (
 	RuleStatus_RULE_STATUS_UNSPECIFIED RuleStatus = 0
 	RuleStatus_RULE_STATUS_SUCCESS     RuleStatus = 1
-	RuleStatus_RULE_STATUS_ERROR       RuleStatus = 2
-	RuleStatus_RULE_STATUS_RETRY       RuleStatus = 3
+	RuleStatus_RULE_STATUS_SKIP        RuleStatus = 2 // Don't run this job
+	RuleStatus_RULE_STATUS_RETRY       RuleStatus = 3 // Missing something, try again later
 )
 
 // Enum value maps for RuleStatus.
@@ -36,13 +36,13 @@ var (
 	RuleStatus_name = map[int32]string{
 		0: "RULE_STATUS_UNSPECIFIED",
 		1: "RULE_STATUS_SUCCESS",
-		2: "RULE_STATUS_ERROR",
+		2: "RULE_STATUS_SKIP",
 		3: "RULE_STATUS_RETRY",
 	}
 	RuleStatus_value = map[string]int32{
 		"RULE_STATUS_UNSPECIFIED": 0,
 		"RULE_STATUS_SUCCESS":     1,
-		"RULE_STATUS_ERROR":       2,
+		"RULE_STATUS_SKIP":        2,
 		"RULE_STATUS_RETRY":       3,
 	}
 )
@@ -77,8 +77,7 @@ func (RuleStatus) EnumDescriptor() ([]byte, []int) {
 type EvaluateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	RuleName      string                 `protobuf:"bytes,1,opt,name=rule_name,json=ruleName,proto3" json:"rule_name,omitempty"`
-	RuleParams    map[string]string      `protobuf:"bytes,2,rep,name=rule_params,json=ruleParams,proto3" json:"rule_params,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	JobParams     map[string]string      `protobuf:"bytes,3,rep,name=job_params,json=jobParams,proto3" json:"job_params,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Params        map[string]string      `protobuf:"bytes,2,rep,name=params,proto3" json:"params,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -120,16 +119,9 @@ func (x *EvaluateRequest) GetRuleName() string {
 	return ""
 }
 
-func (x *EvaluateRequest) GetRuleParams() map[string]string {
+func (x *EvaluateRequest) GetParams() map[string]string {
 	if x != nil {
-		return x.RuleParams
-	}
-	return nil
-}
-
-func (x *EvaluateRequest) GetJobParams() map[string]string {
-	if x != nil {
-		return x.JobParams
+		return x.Params
 	}
 	return nil
 }
@@ -238,87 +230,19 @@ func (*IdentifyRequest) Descriptor() ([]byte, []int) {
 	return file_meadplugin_proto_rawDescGZIP(), []int{2}
 }
 
-type Version struct {
-	state          protoimpl.MessageState `protogen:"open.v1"`
-	VersionMajor   uint32                 `protobuf:"varint,1,opt,name=version_major,json=versionMajor,proto3" json:"version_major,omitempty"`
-	VersionMinor   uint32                 `protobuf:"varint,2,opt,name=version_minor,json=versionMinor,proto3" json:"version_minor,omitempty"`
-	VersionPath    uint32                 `protobuf:"varint,3,opt,name=version_path,json=versionPath,proto3" json:"version_path,omitempty"`
-	VersionRelease uint32                 `protobuf:"varint,4,opt,name=version_release,json=versionRelease,proto3" json:"version_release,omitempty"`
-	unknownFields  protoimpl.UnknownFields
-	sizeCache      protoimpl.SizeCache
-}
-
-func (x *Version) Reset() {
-	*x = Version{}
-	mi := &file_meadplugin_proto_msgTypes[3]
-	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-	ms.StoreMessageInfo(mi)
-}
-
-func (x *Version) String() string {
-	return protoimpl.X.MessageStringOf(x)
-}
-
-func (*Version) ProtoMessage() {}
-
-func (x *Version) ProtoReflect() protoreflect.Message {
-	mi := &file_meadplugin_proto_msgTypes[3]
-	if x != nil {
-		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
-		if ms.LoadMessageInfo() == nil {
-			ms.StoreMessageInfo(mi)
-		}
-		return ms
-	}
-	return mi.MessageOf(x)
-}
-
-// Deprecated: Use Version.ProtoReflect.Descriptor instead.
-func (*Version) Descriptor() ([]byte, []int) {
-	return file_meadplugin_proto_rawDescGZIP(), []int{3}
-}
-
-func (x *Version) GetVersionMajor() uint32 {
-	if x != nil {
-		return x.VersionMajor
-	}
-	return 0
-}
-
-func (x *Version) GetVersionMinor() uint32 {
-	if x != nil {
-		return x.VersionMinor
-	}
-	return 0
-}
-
-func (x *Version) GetVersionPath() uint32 {
-	if x != nil {
-		return x.VersionPath
-	}
-	return 0
-}
-
-func (x *Version) GetVersionRelease() uint32 {
-	if x != nil {
-		return x.VersionRelease
-	}
-	return 0
-}
-
 type Rule struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	RuleName      string                 `protobuf:"bytes,1,opt,name=rule_name,json=ruleName,proto3" json:"rule_name,omitempty"`
-	RuleVersion   *Version               `protobuf:"bytes,2,opt,name=rule_version,json=ruleVersion,proto3" json:"rule_version,omitempty"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Version       string                 `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
 	RuleParams    map[string]string      `protobuf:"bytes,3,rep,name=rule_params,json=ruleParams,proto3" json:"rule_params,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	JobParams     map[string]string      `protobuf:"bytes,4,rep,name=job_params,json=jobParams,proto3" json:"job_params,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	JobParams     []string               `protobuf:"bytes,4,rep,name=job_params,json=jobParams,proto3" json:"job_params,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *Rule) Reset() {
 	*x = Rule{}
-	mi := &file_meadplugin_proto_msgTypes[4]
+	mi := &file_meadplugin_proto_msgTypes[3]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -330,7 +254,7 @@ func (x *Rule) String() string {
 func (*Rule) ProtoMessage() {}
 
 func (x *Rule) ProtoReflect() protoreflect.Message {
-	mi := &file_meadplugin_proto_msgTypes[4]
+	mi := &file_meadplugin_proto_msgTypes[3]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -343,21 +267,21 @@ func (x *Rule) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use Rule.ProtoReflect.Descriptor instead.
 func (*Rule) Descriptor() ([]byte, []int) {
-	return file_meadplugin_proto_rawDescGZIP(), []int{4}
+	return file_meadplugin_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *Rule) GetRuleName() string {
+func (x *Rule) GetName() string {
 	if x != nil {
-		return x.RuleName
+		return x.Name
 	}
 	return ""
 }
 
-func (x *Rule) GetRuleVersion() *Version {
+func (x *Rule) GetVersion() string {
 	if x != nil {
-		return x.RuleVersion
+		return x.Version
 	}
-	return nil
+	return ""
 }
 
 func (x *Rule) GetRuleParams() map[string]string {
@@ -367,7 +291,7 @@ func (x *Rule) GetRuleParams() map[string]string {
 	return nil
 }
 
-func (x *Rule) GetJobParams() map[string]string {
+func (x *Rule) GetJobParams() []string {
 	if x != nil {
 		return x.JobParams
 	}
@@ -376,8 +300,8 @@ func (x *Rule) GetJobParams() map[string]string {
 
 type IdentifyResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	PluginName    string                 `protobuf:"bytes,1,opt,name=plugin_name,json=pluginName,proto3" json:"plugin_name,omitempty"`
-	PluginVersion *Version               `protobuf:"bytes,2,opt,name=plugin_version,json=pluginVersion,proto3" json:"plugin_version,omitempty"`
+	Name          string                 `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+	Version       string                 `protobuf:"bytes,2,opt,name=version,proto3" json:"version,omitempty"`
 	Rules         []*Rule                `protobuf:"bytes,3,rep,name=rules,proto3" json:"rules,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
@@ -385,7 +309,7 @@ type IdentifyResponse struct {
 
 func (x *IdentifyResponse) Reset() {
 	*x = IdentifyResponse{}
-	mi := &file_meadplugin_proto_msgTypes[5]
+	mi := &file_meadplugin_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -397,7 +321,7 @@ func (x *IdentifyResponse) String() string {
 func (*IdentifyResponse) ProtoMessage() {}
 
 func (x *IdentifyResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_meadplugin_proto_msgTypes[5]
+	mi := &file_meadplugin_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -410,21 +334,21 @@ func (x *IdentifyResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use IdentifyResponse.ProtoReflect.Descriptor instead.
 func (*IdentifyResponse) Descriptor() ([]byte, []int) {
-	return file_meadplugin_proto_rawDescGZIP(), []int{5}
+	return file_meadplugin_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *IdentifyResponse) GetPluginName() string {
+func (x *IdentifyResponse) GetName() string {
 	if x != nil {
-		return x.PluginName
+		return x.Name
 	}
 	return ""
 }
 
-func (x *IdentifyResponse) GetPluginVersion() *Version {
+func (x *IdentifyResponse) GetVersion() string {
 	if x != nil {
-		return x.PluginVersion
+		return x.Version
 	}
-	return nil
+	return ""
 }
 
 func (x *IdentifyResponse) GetRules() []*Rule {
@@ -443,7 +367,7 @@ type InsertRequest struct {
 
 func (x *InsertRequest) Reset() {
 	*x = InsertRequest{}
-	mi := &file_meadplugin_proto_msgTypes[6]
+	mi := &file_meadplugin_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -455,7 +379,7 @@ func (x *InsertRequest) String() string {
 func (*InsertRequest) ProtoMessage() {}
 
 func (x *InsertRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_meadplugin_proto_msgTypes[6]
+	mi := &file_meadplugin_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -468,7 +392,7 @@ func (x *InsertRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InsertRequest.ProtoReflect.Descriptor instead.
 func (*InsertRequest) Descriptor() ([]byte, []int) {
-	return file_meadplugin_proto_rawDescGZIP(), []int{6}
+	return file_meadplugin_proto_rawDescGZIP(), []int{5}
 }
 
 func (x *InsertRequest) GetFiles() []string {
@@ -487,7 +411,7 @@ type InsertResponse struct {
 
 func (x *InsertResponse) Reset() {
 	*x = InsertResponse{}
-	mi := &file_meadplugin_proto_msgTypes[7]
+	mi := &file_meadplugin_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -499,7 +423,7 @@ func (x *InsertResponse) String() string {
 func (*InsertResponse) ProtoMessage() {}
 
 func (x *InsertResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_meadplugin_proto_msgTypes[7]
+	mi := &file_meadplugin_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -512,7 +436,7 @@ func (x *InsertResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InsertResponse.ProtoReflect.Descriptor instead.
 func (*InsertResponse) Descriptor() ([]byte, []int) {
-	return file_meadplugin_proto_rawDescGZIP(), []int{7}
+	return file_meadplugin_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *InsertResponse) GetStatus() string {
@@ -527,17 +451,11 @@ var File_meadplugin_proto protoreflect.FileDescriptor
 const file_meadplugin_proto_rawDesc = "" +
 	"\n" +
 	"\x10meadplugin.proto\x12\n" +
-	"meadplugin\x1a\x1fgoogle/protobuf/timestamp.proto\"\xc4\x02\n" +
+	"meadplugin\x1a\x1fgoogle/protobuf/timestamp.proto\"\xaa\x01\n" +
 	"\x0fEvaluateRequest\x12\x1b\n" +
-	"\trule_name\x18\x01 \x01(\tR\bruleName\x12L\n" +
-	"\vrule_params\x18\x02 \x03(\v2+.meadplugin.EvaluateRequest.RuleParamsEntryR\n" +
-	"ruleParams\x12I\n" +
-	"\n" +
-	"job_params\x18\x03 \x03(\v2*.meadplugin.EvaluateRequest.JobParamsEntryR\tjobParams\x1a=\n" +
-	"\x0fRuleParamsEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a<\n" +
-	"\x0eJobParamsEntry\x12\x10\n" +
+	"\trule_name\x18\x01 \x01(\tR\bruleName\x12?\n" +
+	"\x06params\x18\x02 \x03(\v2'.meadplugin.EvaluateRequest.ParamsEntryR\x06params\x1a9\n" +
+	"\vParamsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x9d\x02\n" +
 	"\x10EvaluateResponse\x12.\n" +
@@ -550,41 +468,33 @@ const file_meadplugin_proto_rawDesc = "" +
 	"\x0eJobParamsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x11\n" +
-	"\x0fIdentifyRequest\"\x9f\x01\n" +
-	"\aVersion\x12#\n" +
-	"\rversion_major\x18\x01 \x01(\rR\fversionMajor\x12#\n" +
-	"\rversion_minor\x18\x02 \x01(\rR\fversionMinor\x12!\n" +
-	"\fversion_path\x18\x03 \x01(\rR\vversionPath\x12'\n" +
-	"\x0fversion_release\x18\x04 \x01(\rR\x0eversionRelease\"\xdb\x02\n" +
-	"\x04Rule\x12\x1b\n" +
-	"\trule_name\x18\x01 \x01(\tR\bruleName\x126\n" +
-	"\frule_version\x18\x02 \x01(\v2\x13.meadplugin.VersionR\vruleVersion\x12A\n" +
+	"\x0fIdentifyRequest\"\xd5\x01\n" +
+	"\x04Rule\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x18\n" +
+	"\aversion\x18\x02 \x01(\tR\aversion\x12A\n" +
 	"\vrule_params\x18\x03 \x03(\v2 .meadplugin.Rule.RuleParamsEntryR\n" +
-	"ruleParams\x12>\n" +
+	"ruleParams\x12\x1d\n" +
 	"\n" +
-	"job_params\x18\x04 \x03(\v2\x1f.meadplugin.Rule.JobParamsEntryR\tjobParams\x1a=\n" +
+	"job_params\x18\x04 \x03(\tR\tjobParams\x1a=\n" +
 	"\x0fRuleParamsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\x1a<\n" +
-	"\x0eJobParamsEntry\x12\x10\n" +
-	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x97\x01\n" +
-	"\x10IdentifyResponse\x12\x1f\n" +
-	"\vplugin_name\x18\x01 \x01(\tR\n" +
-	"pluginName\x12:\n" +
-	"\x0eplugin_version\x18\x02 \x01(\v2\x13.meadplugin.VersionR\rpluginVersion\x12&\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"h\n" +
+	"\x10IdentifyResponse\x12\x12\n" +
+	"\x04name\x18\x01 \x01(\tR\x04name\x12\x18\n" +
+	"\aversion\x18\x02 \x01(\tR\aversion\x12&\n" +
 	"\x05rules\x18\x03 \x03(\v2\x10.meadplugin.RuleR\x05rules\"%\n" +
 	"\rInsertRequest\x12\x14\n" +
 	"\x05files\x18\x01 \x03(\tR\x05files\"(\n" +
 	"\x0eInsertResponse\x12\x16\n" +
-	"\x06status\x18\x01 \x01(\tR\x06status*p\n" +
+	"\x06status\x18\x01 \x01(\tR\x06status*o\n" +
 	"\n" +
 	"RuleStatus\x12\x1b\n" +
 	"\x17RULE_STATUS_UNSPECIFIED\x10\x00\x12\x17\n" +
-	"\x13RULE_STATUS_SUCCESS\x10\x01\x12\x15\n" +
-	"\x11RULE_STATUS_ERROR\x10\x02\x12\x15\n" +
-	"\x11RULE_STATUS_RETRY\x10\x032\xdf\x01\n" +
-	"\bmeadrule\x12G\n" +
+	"\x13RULE_STATUS_SUCCESS\x10\x01\x12\x14\n" +
+	"\x10RULE_STATUS_SKIP\x10\x02\x12\x15\n" +
+	"\x11RULE_STATUS_RETRY\x10\x032\xe1\x01\n" +
+	"\n" +
+	"meadplugin\x12G\n" +
 	"\bIdentify\x12\x1b.meadplugin.IdentifyRequest\x1a\x1c.meadplugin.IdentifyResponse\"\x00\x12G\n" +
 	"\bEvaluate\x12\x1b.meadplugin.EvaluateRequest\x1a\x1c.meadplugin.EvaluateResponse\"\x00\x12A\n" +
 	"\x06Insert\x12\x19.meadplugin.InsertRequest\x1a\x1a.meadplugin.InsertResponse\"\x00B\x0eZ\f.;meadpluginb\x06proto3"
@@ -602,46 +512,39 @@ func file_meadplugin_proto_rawDescGZIP() []byte {
 }
 
 var file_meadplugin_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_meadplugin_proto_msgTypes = make([]protoimpl.MessageInfo, 13)
+var file_meadplugin_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_meadplugin_proto_goTypes = []any{
 	(RuleStatus)(0),               // 0: meadplugin.RuleStatus
 	(*EvaluateRequest)(nil),       // 1: meadplugin.EvaluateRequest
 	(*EvaluateResponse)(nil),      // 2: meadplugin.EvaluateResponse
 	(*IdentifyRequest)(nil),       // 3: meadplugin.IdentifyRequest
-	(*Version)(nil),               // 4: meadplugin.Version
-	(*Rule)(nil),                  // 5: meadplugin.Rule
-	(*IdentifyResponse)(nil),      // 6: meadplugin.IdentifyResponse
-	(*InsertRequest)(nil),         // 7: meadplugin.InsertRequest
-	(*InsertResponse)(nil),        // 8: meadplugin.InsertResponse
-	nil,                           // 9: meadplugin.EvaluateRequest.RuleParamsEntry
-	nil,                           // 10: meadplugin.EvaluateRequest.JobParamsEntry
-	nil,                           // 11: meadplugin.EvaluateResponse.JobParamsEntry
-	nil,                           // 12: meadplugin.Rule.RuleParamsEntry
-	nil,                           // 13: meadplugin.Rule.JobParamsEntry
-	(*timestamppb.Timestamp)(nil), // 14: google.protobuf.Timestamp
+	(*Rule)(nil),                  // 4: meadplugin.Rule
+	(*IdentifyResponse)(nil),      // 5: meadplugin.IdentifyResponse
+	(*InsertRequest)(nil),         // 6: meadplugin.InsertRequest
+	(*InsertResponse)(nil),        // 7: meadplugin.InsertResponse
+	nil,                           // 8: meadplugin.EvaluateRequest.ParamsEntry
+	nil,                           // 9: meadplugin.EvaluateResponse.JobParamsEntry
+	nil,                           // 10: meadplugin.Rule.RuleParamsEntry
+	(*timestamppb.Timestamp)(nil), // 11: google.protobuf.Timestamp
 }
 var file_meadplugin_proto_depIdxs = []int32{
-	9,  // 0: meadplugin.EvaluateRequest.rule_params:type_name -> meadplugin.EvaluateRequest.RuleParamsEntry
-	10, // 1: meadplugin.EvaluateRequest.job_params:type_name -> meadplugin.EvaluateRequest.JobParamsEntry
-	0,  // 2: meadplugin.EvaluateResponse.status:type_name -> meadplugin.RuleStatus
-	14, // 3: meadplugin.EvaluateResponse.retry_time:type_name -> google.protobuf.Timestamp
-	11, // 4: meadplugin.EvaluateResponse.job_params:type_name -> meadplugin.EvaluateResponse.JobParamsEntry
-	4,  // 5: meadplugin.Rule.rule_version:type_name -> meadplugin.Version
-	12, // 6: meadplugin.Rule.rule_params:type_name -> meadplugin.Rule.RuleParamsEntry
-	13, // 7: meadplugin.Rule.job_params:type_name -> meadplugin.Rule.JobParamsEntry
-	4,  // 8: meadplugin.IdentifyResponse.plugin_version:type_name -> meadplugin.Version
-	5,  // 9: meadplugin.IdentifyResponse.rules:type_name -> meadplugin.Rule
-	3,  // 10: meadplugin.meadrule.Identify:input_type -> meadplugin.IdentifyRequest
-	1,  // 11: meadplugin.meadrule.Evaluate:input_type -> meadplugin.EvaluateRequest
-	7,  // 12: meadplugin.meadrule.Insert:input_type -> meadplugin.InsertRequest
-	6,  // 13: meadplugin.meadrule.Identify:output_type -> meadplugin.IdentifyResponse
-	2,  // 14: meadplugin.meadrule.Evaluate:output_type -> meadplugin.EvaluateResponse
-	8,  // 15: meadplugin.meadrule.Insert:output_type -> meadplugin.InsertResponse
-	13, // [13:16] is the sub-list for method output_type
-	10, // [10:13] is the sub-list for method input_type
-	10, // [10:10] is the sub-list for extension type_name
-	10, // [10:10] is the sub-list for extension extendee
-	0,  // [0:10] is the sub-list for field type_name
+	8,  // 0: meadplugin.EvaluateRequest.params:type_name -> meadplugin.EvaluateRequest.ParamsEntry
+	0,  // 1: meadplugin.EvaluateResponse.status:type_name -> meadplugin.RuleStatus
+	11, // 2: meadplugin.EvaluateResponse.retry_time:type_name -> google.protobuf.Timestamp
+	9,  // 3: meadplugin.EvaluateResponse.job_params:type_name -> meadplugin.EvaluateResponse.JobParamsEntry
+	10, // 4: meadplugin.Rule.rule_params:type_name -> meadplugin.Rule.RuleParamsEntry
+	4,  // 5: meadplugin.IdentifyResponse.rules:type_name -> meadplugin.Rule
+	3,  // 6: meadplugin.meadplugin.Identify:input_type -> meadplugin.IdentifyRequest
+	1,  // 7: meadplugin.meadplugin.Evaluate:input_type -> meadplugin.EvaluateRequest
+	6,  // 8: meadplugin.meadplugin.Insert:input_type -> meadplugin.InsertRequest
+	5,  // 9: meadplugin.meadplugin.Identify:output_type -> meadplugin.IdentifyResponse
+	2,  // 10: meadplugin.meadplugin.Evaluate:output_type -> meadplugin.EvaluateResponse
+	7,  // 11: meadplugin.meadplugin.Insert:output_type -> meadplugin.InsertResponse
+	9,  // [9:12] is the sub-list for method output_type
+	6,  // [6:9] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_meadplugin_proto_init() }
@@ -655,7 +558,7 @@ func file_meadplugin_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_meadplugin_proto_rawDesc), len(file_meadplugin_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   13,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

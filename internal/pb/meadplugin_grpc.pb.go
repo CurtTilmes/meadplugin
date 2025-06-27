@@ -19,177 +19,177 @@ import (
 const _ = grpc.SupportPackageIsVersion9
 
 const (
-	Meadrule_Identify_FullMethodName = "/meadplugin.meadrule/Identify"
-	Meadrule_Evaluate_FullMethodName = "/meadplugin.meadrule/Evaluate"
-	Meadrule_Insert_FullMethodName   = "/meadplugin.meadrule/Insert"
+	Meadplugin_Identify_FullMethodName = "/meadplugin.meadplugin/Identify"
+	Meadplugin_Evaluate_FullMethodName = "/meadplugin.meadplugin/Evaluate"
+	Meadplugin_Insert_FullMethodName   = "/meadplugin.meadplugin/Insert"
 )
 
-// MeadruleClient is the client API for Meadrule service.
+// MeadpluginClient is the client API for Meadplugin service.
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
-type MeadruleClient interface {
+type MeadpluginClient interface {
 	Identify(ctx context.Context, in *IdentifyRequest, opts ...grpc.CallOption) (*IdentifyResponse, error)
 	Evaluate(ctx context.Context, in *EvaluateRequest, opts ...grpc.CallOption) (*EvaluateResponse, error)
 	Insert(ctx context.Context, in *InsertRequest, opts ...grpc.CallOption) (*InsertResponse, error)
 }
 
-type meadruleClient struct {
+type meadpluginClient struct {
 	cc grpc.ClientConnInterface
 }
 
-func NewMeadruleClient(cc grpc.ClientConnInterface) MeadruleClient {
-	return &meadruleClient{cc}
+func NewMeadpluginClient(cc grpc.ClientConnInterface) MeadpluginClient {
+	return &meadpluginClient{cc}
 }
 
-func (c *meadruleClient) Identify(ctx context.Context, in *IdentifyRequest, opts ...grpc.CallOption) (*IdentifyResponse, error) {
+func (c *meadpluginClient) Identify(ctx context.Context, in *IdentifyRequest, opts ...grpc.CallOption) (*IdentifyResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(IdentifyResponse)
-	err := c.cc.Invoke(ctx, Meadrule_Identify_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Meadplugin_Identify_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *meadruleClient) Evaluate(ctx context.Context, in *EvaluateRequest, opts ...grpc.CallOption) (*EvaluateResponse, error) {
+func (c *meadpluginClient) Evaluate(ctx context.Context, in *EvaluateRequest, opts ...grpc.CallOption) (*EvaluateResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(EvaluateResponse)
-	err := c.cc.Invoke(ctx, Meadrule_Evaluate_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Meadplugin_Evaluate_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-func (c *meadruleClient) Insert(ctx context.Context, in *InsertRequest, opts ...grpc.CallOption) (*InsertResponse, error) {
+func (c *meadpluginClient) Insert(ctx context.Context, in *InsertRequest, opts ...grpc.CallOption) (*InsertResponse, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(InsertResponse)
-	err := c.cc.Invoke(ctx, Meadrule_Insert_FullMethodName, in, out, cOpts...)
+	err := c.cc.Invoke(ctx, Meadplugin_Insert_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
 	return out, nil
 }
 
-// MeadruleServer is the server API for Meadrule service.
-// All implementations must embed UnimplementedMeadruleServer
+// MeadpluginServer is the server API for Meadplugin service.
+// All implementations must embed UnimplementedMeadpluginServer
 // for forward compatibility.
-type MeadruleServer interface {
+type MeadpluginServer interface {
 	Identify(context.Context, *IdentifyRequest) (*IdentifyResponse, error)
 	Evaluate(context.Context, *EvaluateRequest) (*EvaluateResponse, error)
 	Insert(context.Context, *InsertRequest) (*InsertResponse, error)
-	mustEmbedUnimplementedMeadruleServer()
+	mustEmbedUnimplementedMeadpluginServer()
 }
 
-// UnimplementedMeadruleServer must be embedded to have
+// UnimplementedMeadpluginServer must be embedded to have
 // forward compatible implementations.
 //
 // NOTE: this should be embedded by value instead of pointer to avoid a nil
 // pointer dereference when methods are called.
-type UnimplementedMeadruleServer struct{}
+type UnimplementedMeadpluginServer struct{}
 
-func (UnimplementedMeadruleServer) Identify(context.Context, *IdentifyRequest) (*IdentifyResponse, error) {
+func (UnimplementedMeadpluginServer) Identify(context.Context, *IdentifyRequest) (*IdentifyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Identify not implemented")
 }
-func (UnimplementedMeadruleServer) Evaluate(context.Context, *EvaluateRequest) (*EvaluateResponse, error) {
+func (UnimplementedMeadpluginServer) Evaluate(context.Context, *EvaluateRequest) (*EvaluateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Evaluate not implemented")
 }
-func (UnimplementedMeadruleServer) Insert(context.Context, *InsertRequest) (*InsertResponse, error) {
+func (UnimplementedMeadpluginServer) Insert(context.Context, *InsertRequest) (*InsertResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Insert not implemented")
 }
-func (UnimplementedMeadruleServer) mustEmbedUnimplementedMeadruleServer() {}
-func (UnimplementedMeadruleServer) testEmbeddedByValue()                  {}
+func (UnimplementedMeadpluginServer) mustEmbedUnimplementedMeadpluginServer() {}
+func (UnimplementedMeadpluginServer) testEmbeddedByValue()                    {}
 
-// UnsafeMeadruleServer may be embedded to opt out of forward compatibility for this service.
-// Use of this interface is not recommended, as added methods to MeadruleServer will
+// UnsafeMeadpluginServer may be embedded to opt out of forward compatibility for this service.
+// Use of this interface is not recommended, as added methods to MeadpluginServer will
 // result in compilation errors.
-type UnsafeMeadruleServer interface {
-	mustEmbedUnimplementedMeadruleServer()
+type UnsafeMeadpluginServer interface {
+	mustEmbedUnimplementedMeadpluginServer()
 }
 
-func RegisterMeadruleServer(s grpc.ServiceRegistrar, srv MeadruleServer) {
-	// If the following call pancis, it indicates UnimplementedMeadruleServer was
+func RegisterMeadpluginServer(s grpc.ServiceRegistrar, srv MeadpluginServer) {
+	// If the following call pancis, it indicates UnimplementedMeadpluginServer was
 	// embedded by pointer and is nil.  This will cause panics if an
 	// unimplemented method is ever invoked, so we test this at initialization
 	// time to prevent it from happening at runtime later due to I/O.
 	if t, ok := srv.(interface{ testEmbeddedByValue() }); ok {
 		t.testEmbeddedByValue()
 	}
-	s.RegisterService(&Meadrule_ServiceDesc, srv)
+	s.RegisterService(&Meadplugin_ServiceDesc, srv)
 }
 
-func _Meadrule_Identify_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Meadplugin_Identify_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(IdentifyRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MeadruleServer).Identify(ctx, in)
+		return srv.(MeadpluginServer).Identify(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Meadrule_Identify_FullMethodName,
+		FullMethod: Meadplugin_Identify_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MeadruleServer).Identify(ctx, req.(*IdentifyRequest))
+		return srv.(MeadpluginServer).Identify(ctx, req.(*IdentifyRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Meadrule_Evaluate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Meadplugin_Evaluate_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(EvaluateRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MeadruleServer).Evaluate(ctx, in)
+		return srv.(MeadpluginServer).Evaluate(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Meadrule_Evaluate_FullMethodName,
+		FullMethod: Meadplugin_Evaluate_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MeadruleServer).Evaluate(ctx, req.(*EvaluateRequest))
+		return srv.(MeadpluginServer).Evaluate(ctx, req.(*EvaluateRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Meadrule_Insert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+func _Meadplugin_Insert_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(InsertRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(MeadruleServer).Insert(ctx, in)
+		return srv.(MeadpluginServer).Insert(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: Meadrule_Insert_FullMethodName,
+		FullMethod: Meadplugin_Insert_FullMethodName,
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(MeadruleServer).Insert(ctx, req.(*InsertRequest))
+		return srv.(MeadpluginServer).Insert(ctx, req.(*InsertRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
 
-// Meadrule_ServiceDesc is the grpc.ServiceDesc for Meadrule service.
+// Meadplugin_ServiceDesc is the grpc.ServiceDesc for Meadplugin service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
-var Meadrule_ServiceDesc = grpc.ServiceDesc{
-	ServiceName: "meadplugin.meadrule",
-	HandlerType: (*MeadruleServer)(nil),
+var Meadplugin_ServiceDesc = grpc.ServiceDesc{
+	ServiceName: "meadplugin.meadplugin",
+	HandlerType: (*MeadpluginServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
 			MethodName: "Identify",
-			Handler:    _Meadrule_Identify_Handler,
+			Handler:    _Meadplugin_Identify_Handler,
 		},
 		{
 			MethodName: "Evaluate",
-			Handler:    _Meadrule_Evaluate_Handler,
+			Handler:    _Meadplugin_Evaluate_Handler,
 		},
 		{
 			MethodName: "Insert",
-			Handler:    _Meadrule_Insert_Handler,
+			Handler:    _Meadplugin_Insert_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
