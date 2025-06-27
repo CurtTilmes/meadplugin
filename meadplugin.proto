@@ -1,0 +1,64 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+option go_package = ".;meadplugin";
+
+package meadplugin;
+
+service meadrule {
+  rpc Identify (IdentifyRequest) returns (IdentifyResponse) {}
+  rpc Evaluate (EvaluateRequest) returns (EvaluateResponse) {}
+  rpc Insert (InsertRequest) returns (InsertResponse) {}
+}
+
+message EvaluateRequest {
+  string rule_name = 1;
+  map<string,string> rule_params = 2;
+  map<string,string> job_params = 3;
+}
+
+enum RuleStatus {
+  RULE_STATUS_UNSPECIFIED = 0;
+  RULE_STATUS_SUCCESS = 1;
+  RULE_STATUS_ERROR = 2;
+  RULE_STATUS_RETRY = 3;
+}
+
+message EvaluateResponse {
+  RuleStatus status = 1;
+  google.protobuf.Timestamp retry_time = 2;
+  map<string,string> job_params = 3;
+  repeated string files = 4;
+}
+
+message IdentifyRequest {
+}
+
+message Version {
+  uint32 version_major = 1;
+  uint32 version_minor = 2;
+  uint32 version_path = 3;
+  uint32 version_release = 4;
+}
+
+message Rule {
+  string rule_name = 1;
+  Version rule_version = 2;
+  map<string,string> rule_params = 3;
+  map<string,string> job_params = 4;
+}
+
+message IdentifyResponse {
+  string plugin_name = 1;
+  Version plugin_version = 2;
+  repeated Rule rules = 3;
+}
+
+message InsertRequest {
+  repeated string files = 1;
+}
+
+message InsertResponse {
+  string status = 1;
+}
