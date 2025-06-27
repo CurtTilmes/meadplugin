@@ -2,6 +2,6 @@
     "rule_name": "samplerule",
     "params":
     {
-        "retry": "Can't run now, but try this rules again later"
+        "retry": "Can't run now, but try these rules again later"
     }
 }
