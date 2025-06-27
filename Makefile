@@ -1,3 +1,6 @@
+run:
+	go run ./cmd/server
+
 identify:
 	grpcurl -proto internal/pb/meadplugin.proto -plaintext localhost:50051 meadplugin.meadplugin.Identify
 
