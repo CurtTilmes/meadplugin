@@ -1,0 +1,8 @@
+{
+    "rule_name": "samplerule", 
+    "params": 
+    { 
+        "some-param": "some-value", 
+        "another-param": "foobar" 
+    } 
+}

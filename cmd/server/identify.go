@@ -13,8 +13,8 @@ func (s *Server) Identify(_ context.Context, in *pb.IdentifyRequest) (response *
 	log.Printf("IdentifyRequest")
 
 	return &pb.IdentifyResponse{
-		Name:    "MEAD Plugin Template",
-		Version: config.Version(),
+		Name:    config.Config.Name,
+		Version: config.Config.Version,
 		Rules:   rule.IdentifyRules(),
 	}, nil
 }

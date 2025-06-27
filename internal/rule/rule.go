@@ -11,10 +11,13 @@ import (
 	"google.golang.org/protobuf/types/known/timestamppb"
 )
 
+// Alias for simplicity
 type Response = pb.EvaluateResponse
 
+// Signature for the Evaluation Function for each rule
 type EvaluationFunction = func(ctx context.Context, params map[string]string) (*Response, error)
 
+// Hold information about each rule this plugin supports
 type Rule struct {
 	Name       string
 	Version    string
@@ -23,8 +26,10 @@ type Rule struct {
 	Evaluate   EvaluationFunction
 }
 
+// Table of all rules and the function to evaluate them
 var ruleTable map[string]*Rule = map[string]*Rule{}
 
+// Each rule will register with the central table
 func Register(rule *Rule) {
 	r := regexp.MustCompile(`^\d+\.\d+\.\d+-\d+$`)
 	if !r.MatchString(rule.Version) {
@@ -33,6 +38,7 @@ func Register(rule *Rule) {
 	ruleTable[rule.Name] = rule
 }
 
+// Give MEAD information about the plugin and rules it supports
 func IdentifyRules() (rules []*pb.Rule) {
 
 	for _, r := range ruleTable {
@@ -45,7 +51,8 @@ func IdentifyRules() (rules []*pb.Rule) {
 	return rules
 }
 
-func Evaluate(ctx context.Context, in *pb.EvaluateRequest) (res *pb.EvaluateResponse, err error) {
+// General evaluate -- calls the function for the right rule
+func Evaluate(ctx context.Context, in *pb.EvaluateRequest) (res *Response, err error) {
 	name := in.GetRuleName()
 	params := in.GetParams()
 
@@ -64,10 +71,12 @@ func Evaluate(ctx context.Context, in *pb.EvaluateRequest) (res *pb.EvaluateResp
 	return rule.Evaluate(ctx, params)
 }
 
+// Make a new response
 func NewResponse() *Response {
 	return &Response{}
 }
 
+// Set a param to a value
 func Set(r *Response, key string, val string) {
 	if r.JobParams == nil {
 		r.JobParams = map[string]string{key: val}
@@ -76,6 +85,7 @@ func Set(r *Response, key string, val string) {
 	r.JobParams[key] = val
 }
 
+// Add a file identifier to the return list
 func Add(r *Response, fileid string) {
 	if r.Files == nil {
 		r.Files = []string{fileid}
@@ -84,16 +94,19 @@ func Add(r *Response, fileid string) {
 	r.Files = append(r.Files, fileid)
 }
 
+// set Status to Success
 func Success(r *Response) (*Response, error) {
 	r.Status = pb.RuleStatus_RULE_STATUS_SUCCESS
 	return r, nil
 }
 
+// set Status to Skip
 func Skip(r *Response) (*Response, error) {
 	r.Status = pb.RuleStatus_RULE_STATUS_SKIP
 	return r, nil
 }
 
+// set Status to Retry and store the timestamp
 func Retry(r *Response, t time.Time) (*Response, error) {
 	r.RetryTime = timestamppb.New(t)
 	r.Status = pb.RuleStatus_RULE_STATUS_RETRY

@@ -13,15 +13,8 @@ var Config meadpluginConfig
 
 type meadpluginConfig struct {
 	Listen  string `yaml:"listen"`
+	Name    string `yaml:"name"`
 	Version string `yaml:"version"`
-}
-
-func Listen() string {
-	return Config.Listen
-}
-
-func Version() string {
-	return Config.Version
 }
 
 func init() {
@@ -42,6 +35,10 @@ func init() {
 
 	if Config.Listen == "" {
 		log.Fatalf("Must specify listen in config")
+	}
+
+	if Config.Name == "" {
+		log.Fatalf("Must specify name in config")
 	}
 
 	if Config.Version == "" {
