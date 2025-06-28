@@ -1,7 +1,0 @@
-{
-    "rule_name": "samplerule",
-    "params":
-    {
-        "panic": "intentionally crash the evaluator"
-    }
-}

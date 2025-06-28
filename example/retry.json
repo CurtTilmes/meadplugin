@@ -1,7 +1,0 @@
-{
-    "rule_name": "samplerule",
-    "params":
-    {
-        "retry": "Can't run now, but try these rules again later"
-    }
-}
