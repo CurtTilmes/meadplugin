@@ -1,7 +1,5 @@
 syntax = "proto3";
 
-import "google/protobuf/timestamp.proto";
-
 option go_package = ".;meadplugin";
 
 package meadplugin;
@@ -20,13 +18,14 @@ message EvaluateRequest {
 enum RuleStatus {
   RULE_STATUS_UNSPECIFIED = 0;
   RULE_STATUS_SUCCESS = 1; 
-  RULE_STATUS_SKIP = 2;    // Don't run this job
-  RULE_STATUS_RETRY = 3;   // Missing something, try again later
+  RULE_STATUS_SKIP = 2;      // Don't run this job, just move it immediately to state skipped
+  RULE_STATUS_RETRY = 3;     // Missing something, try again later
+  RULE_STATUS_FAILURE = 4;   // This rule will never succeed, move it to the state error
 }
 
 message EvaluateResponse {
   RuleStatus status = 1;
-  google.protobuf.Timestamp retry_time = 2;
+  string message = 2;
   map<string,string> job_params = 3;
   repeated string files = 4;
 }

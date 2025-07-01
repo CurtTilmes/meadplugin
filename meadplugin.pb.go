@@ -9,7 +9,6 @@ package meadplugin
 import (
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	timestamppb "google.golang.org/protobuf/types/known/timestamppb"
 	reflect "reflect"
 	sync "sync"
 	unsafe "unsafe"
@@ -27,8 +26,9 @@ type RuleStatus int32
 const (
 	RuleStatus_RULE_STATUS_UNSPECIFIED RuleStatus = 0
 	RuleStatus_RULE_STATUS_SUCCESS     RuleStatus = 1
-	RuleStatus_RULE_STATUS_SKIP        RuleStatus = 2 // Don't run this job
+	RuleStatus_RULE_STATUS_SKIP        RuleStatus = 2 // Don't run this job, just move it immediately to state skipped
 	RuleStatus_RULE_STATUS_RETRY       RuleStatus = 3 // Missing something, try again later
+	RuleStatus_RULE_STATUS_FAILURE     RuleStatus = 4 // This rule will never succeed, move it to the state error
 )
 
 // Enum value maps for RuleStatus.
@@ -38,12 +38,14 @@ var (
 		1: "RULE_STATUS_SUCCESS",
 		2: "RULE_STATUS_SKIP",
 		3: "RULE_STATUS_RETRY",
+		4: "RULE_STATUS_FAILURE",
 	}
 	RuleStatus_value = map[string]int32{
 		"RULE_STATUS_UNSPECIFIED": 0,
 		"RULE_STATUS_SUCCESS":     1,
 		"RULE_STATUS_SKIP":        2,
 		"RULE_STATUS_RETRY":       3,
+		"RULE_STATUS_FAILURE":     4,
 	}
 )
 
@@ -129,7 +131,7 @@ func (x *EvaluateRequest) GetParams() map[string]string {
 type EvaluateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Status        RuleStatus             `protobuf:"varint,1,opt,name=status,proto3,enum=meadplugin.RuleStatus" json:"status,omitempty"`
-	RetryTime     *timestamppb.Timestamp `protobuf:"bytes,2,opt,name=retry_time,json=retryTime,proto3" json:"retry_time,omitempty"`
+	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
 	JobParams     map[string]string      `protobuf:"bytes,3,rep,name=job_params,json=jobParams,proto3" json:"job_params,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	Files         []string               `protobuf:"bytes,4,rep,name=files,proto3" json:"files,omitempty"`
 	unknownFields protoimpl.UnknownFields
@@ -173,11 +175,11 @@ func (x *EvaluateResponse) GetStatus() RuleStatus {
 	return RuleStatus_RULE_STATUS_UNSPECIFIED
 }
 
-func (x *EvaluateResponse) GetRetryTime() *timestamppb.Timestamp {
+func (x *EvaluateResponse) GetMessage() string {
 	if x != nil {
-		return x.RetryTime
+		return x.Message
 	}
-	return nil
+	return ""
 }
 
 func (x *EvaluateResponse) GetJobParams() map[string]string {
@@ -451,17 +453,16 @@ var File_meadplugin_proto protoreflect.FileDescriptor
 const file_meadplugin_proto_rawDesc = "" +
 	"\n" +
 	"\x10meadplugin.proto\x12\n" +
-	"meadplugin\x1a\x1fgoogle/protobuf/timestamp.proto\"\xaa\x01\n" +
+	"meadplugin\"\xaa\x01\n" +
 	"\x0fEvaluateRequest\x12\x1b\n" +
 	"\trule_name\x18\x01 \x01(\tR\bruleName\x12?\n" +
 	"\x06params\x18\x02 \x03(\v2'.meadplugin.EvaluateRequest.ParamsEntryR\x06params\x1a9\n" +
 	"\vParamsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x9d\x02\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xfc\x01\n" +
 	"\x10EvaluateResponse\x12.\n" +
-	"\x06status\x18\x01 \x01(\x0e2\x16.meadplugin.RuleStatusR\x06status\x129\n" +
-	"\n" +
-	"retry_time\x18\x02 \x01(\v2\x1a.google.protobuf.TimestampR\tretryTime\x12J\n" +
+	"\x06status\x18\x01 \x01(\x0e2\x16.meadplugin.RuleStatusR\x06status\x12\x18\n" +
+	"\amessage\x18\x02 \x01(\tR\amessage\x12J\n" +
 	"\n" +
 	"job_params\x18\x03 \x03(\v2+.meadplugin.EvaluateResponse.JobParamsEntryR\tjobParams\x12\x14\n" +
 	"\x05files\x18\x04 \x03(\tR\x05files\x1a<\n" +
@@ -486,13 +487,14 @@ const file_meadplugin_proto_rawDesc = "" +
 	"\rInsertRequest\x12\x14\n" +
 	"\x05files\x18\x01 \x03(\tR\x05files\"(\n" +
 	"\x0eInsertResponse\x12\x16\n" +
-	"\x06status\x18\x01 \x01(\tR\x06status*o\n" +
+	"\x06status\x18\x01 \x01(\tR\x06status*\x88\x01\n" +
 	"\n" +
 	"RuleStatus\x12\x1b\n" +
 	"\x17RULE_STATUS_UNSPECIFIED\x10\x00\x12\x17\n" +
 	"\x13RULE_STATUS_SUCCESS\x10\x01\x12\x14\n" +
 	"\x10RULE_STATUS_SKIP\x10\x02\x12\x15\n" +
-	"\x11RULE_STATUS_RETRY\x10\x032\xe1\x01\n" +
+	"\x11RULE_STATUS_RETRY\x10\x03\x12\x17\n" +
+	"\x13RULE_STATUS_FAILURE\x10\x042\xe1\x01\n" +
 	"\n" +
 	"meadplugin\x12G\n" +
 	"\bIdentify\x12\x1b.meadplugin.IdentifyRequest\x1a\x1c.meadplugin.IdentifyResponse\"\x00\x12G\n" +
@@ -514,37 +516,35 @@ func file_meadplugin_proto_rawDescGZIP() []byte {
 var file_meadplugin_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
 var file_meadplugin_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_meadplugin_proto_goTypes = []any{
-	(RuleStatus)(0),               // 0: meadplugin.RuleStatus
-	(*EvaluateRequest)(nil),       // 1: meadplugin.EvaluateRequest
-	(*EvaluateResponse)(nil),      // 2: meadplugin.EvaluateResponse
-	(*IdentifyRequest)(nil),       // 3: meadplugin.IdentifyRequest
-	(*Rule)(nil),                  // 4: meadplugin.Rule
-	(*IdentifyResponse)(nil),      // 5: meadplugin.IdentifyResponse
-	(*InsertRequest)(nil),         // 6: meadplugin.InsertRequest
-	(*InsertResponse)(nil),        // 7: meadplugin.InsertResponse
-	nil,                           // 8: meadplugin.EvaluateRequest.ParamsEntry
-	nil,                           // 9: meadplugin.EvaluateResponse.JobParamsEntry
-	nil,                           // 10: meadplugin.Rule.RuleParamsEntry
-	(*timestamppb.Timestamp)(nil), // 11: google.protobuf.Timestamp
+	(RuleStatus)(0),          // 0: meadplugin.RuleStatus
+	(*EvaluateRequest)(nil),  // 1: meadplugin.EvaluateRequest
+	(*EvaluateResponse)(nil), // 2: meadplugin.EvaluateResponse
+	(*IdentifyRequest)(nil),  // 3: meadplugin.IdentifyRequest
+	(*Rule)(nil),             // 4: meadplugin.Rule
+	(*IdentifyResponse)(nil), // 5: meadplugin.IdentifyResponse
+	(*InsertRequest)(nil),    // 6: meadplugin.InsertRequest
+	(*InsertResponse)(nil),   // 7: meadplugin.InsertResponse
+	nil,                      // 8: meadplugin.EvaluateRequest.ParamsEntry
+	nil,                      // 9: meadplugin.EvaluateResponse.JobParamsEntry
+	nil,                      // 10: meadplugin.Rule.RuleParamsEntry
 }
 var file_meadplugin_proto_depIdxs = []int32{
 	8,  // 0: meadplugin.EvaluateRequest.params:type_name -> meadplugin.EvaluateRequest.ParamsEntry
 	0,  // 1: meadplugin.EvaluateResponse.status:type_name -> meadplugin.RuleStatus
-	11, // 2: meadplugin.EvaluateResponse.retry_time:type_name -> google.protobuf.Timestamp
-	9,  // 3: meadplugin.EvaluateResponse.job_params:type_name -> meadplugin.EvaluateResponse.JobParamsEntry
-	10, // 4: meadplugin.Rule.rule_params:type_name -> meadplugin.Rule.RuleParamsEntry
-	4,  // 5: meadplugin.IdentifyResponse.rules:type_name -> meadplugin.Rule
-	3,  // 6: meadplugin.meadplugin.Identify:input_type -> meadplugin.IdentifyRequest
-	1,  // 7: meadplugin.meadplugin.Evaluate:input_type -> meadplugin.EvaluateRequest
-	6,  // 8: meadplugin.meadplugin.Insert:input_type -> meadplugin.InsertRequest
-	5,  // 9: meadplugin.meadplugin.Identify:output_type -> meadplugin.IdentifyResponse
-	2,  // 10: meadplugin.meadplugin.Evaluate:output_type -> meadplugin.EvaluateResponse
-	7,  // 11: meadplugin.meadplugin.Insert:output_type -> meadplugin.InsertResponse
-	9,  // [9:12] is the sub-list for method output_type
-	6,  // [6:9] is the sub-list for method input_type
-	6,  // [6:6] is the sub-list for extension type_name
-	6,  // [6:6] is the sub-list for extension extendee
-	0,  // [0:6] is the sub-list for field type_name
+	9,  // 2: meadplugin.EvaluateResponse.job_params:type_name -> meadplugin.EvaluateResponse.JobParamsEntry
+	10, // 3: meadplugin.Rule.rule_params:type_name -> meadplugin.Rule.RuleParamsEntry
+	4,  // 4: meadplugin.IdentifyResponse.rules:type_name -> meadplugin.Rule
+	3,  // 5: meadplugin.meadplugin.Identify:input_type -> meadplugin.IdentifyRequest
+	1,  // 6: meadplugin.meadplugin.Evaluate:input_type -> meadplugin.EvaluateRequest
+	6,  // 7: meadplugin.meadplugin.Insert:input_type -> meadplugin.InsertRequest
+	5,  // 8: meadplugin.meadplugin.Identify:output_type -> meadplugin.IdentifyResponse
+	2,  // 9: meadplugin.meadplugin.Evaluate:output_type -> meadplugin.EvaluateResponse
+	7,  // 10: meadplugin.meadplugin.Insert:output_type -> meadplugin.InsertResponse
+	8,  // [8:11] is the sub-list for method output_type
+	5,  // [5:8] is the sub-list for method input_type
+	5,  // [5:5] is the sub-list for extension type_name
+	5,  // [5:5] is the sub-list for extension extendee
+	0,  // [0:5] is the sub-list for field type_name
 }
 
 func init() { file_meadplugin_proto_init() }
