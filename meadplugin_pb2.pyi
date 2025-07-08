@@ -12,7 +12,7 @@ RULE_STATUS_SUCCESS: RuleStatus
 RULE_STATUS_UNSPECIFIED: RuleStatus
 
 class EvaluateRequest(_message.Message):
-    __slots__ = ["params", "rule_name"]
+    __slots__ = ["params", "rule"]
     class ParamsEntry(_message.Message):
         __slots__ = ["key", "value"]
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -21,14 +21,14 @@ class EvaluateRequest(_message.Message):
         value: str
         def __init__(self, key: _Optional[str] = ..., value: _Optional[str] = ...) -> None: ...
     PARAMS_FIELD_NUMBER: _ClassVar[int]
-    RULE_NAME_FIELD_NUMBER: _ClassVar[int]
+    RULE_FIELD_NUMBER: _ClassVar[int]
     params: _containers.ScalarMap[str, str]
-    rule_name: str
-    def __init__(self, rule_name: _Optional[str] = ..., params: _Optional[_Mapping[str, str]] = ...) -> None: ...
+    rule: str
+    def __init__(self, rule: _Optional[str] = ..., params: _Optional[_Mapping[str, str]] = ...) -> None: ...
 
 class EvaluateResponse(_message.Message):
-    __slots__ = ["files", "job_params", "message", "status"]
-    class JobParamsEntry(_message.Message):
+    __slots__ = ["files", "message", "params", "status"]
+    class ParamsEntry(_message.Message):
         __slots__ = ["key", "value"]
         KEY_FIELD_NUMBER: _ClassVar[int]
         VALUE_FIELD_NUMBER: _ClassVar[int]
@@ -36,14 +36,14 @@ class EvaluateResponse(_message.Message):
         value: str
         def __init__(self, key: _Optional[str] = ..., value: _Optional[str] = ...) -> None: ...
     FILES_FIELD_NUMBER: _ClassVar[int]
-    JOB_PARAMS_FIELD_NUMBER: _ClassVar[int]
     MESSAGE_FIELD_NUMBER: _ClassVar[int]
+    PARAMS_FIELD_NUMBER: _ClassVar[int]
     STATUS_FIELD_NUMBER: _ClassVar[int]
     files: _containers.RepeatedScalarFieldContainer[str]
-    job_params: _containers.ScalarMap[str, str]
     message: str
+    params: _containers.ScalarMap[str, str]
     status: RuleStatus
-    def __init__(self, status: _Optional[_Union[RuleStatus, str]] = ..., message: _Optional[str] = ..., job_params: _Optional[_Mapping[str, str]] = ..., files: _Optional[_Iterable[str]] = ...) -> None: ...
+    def __init__(self, status: _Optional[_Union[RuleStatus, str]] = ..., message: _Optional[str] = ..., params: _Optional[_Mapping[str, str]] = ..., files: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class IdentifyRequest(_message.Message):
     __slots__ = []
@@ -55,9 +55,9 @@ class IdentifyResponse(_message.Message):
     RULES_FIELD_NUMBER: _ClassVar[int]
     VERSION_FIELD_NUMBER: _ClassVar[int]
     name: str
-    rules: _containers.RepeatedCompositeFieldContainer[Rule]
+    rules: _containers.RepeatedScalarFieldContainer[str]
     version: str
-    def __init__(self, name: _Optional[str] = ..., version: _Optional[str] = ..., rules: _Optional[_Iterable[_Union[Rule, _Mapping]]] = ...) -> None: ...
+    def __init__(self, name: _Optional[str] = ..., version: _Optional[str] = ..., rules: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class InsertRequest(_message.Message):
     __slots__ = ["files"]
@@ -70,25 +70,6 @@ class InsertResponse(_message.Message):
     STATUS_FIELD_NUMBER: _ClassVar[int]
     status: str
     def __init__(self, status: _Optional[str] = ...) -> None: ...
-
-class Rule(_message.Message):
-    __slots__ = ["job_params", "name", "rule_params", "version"]
-    class RuleParamsEntry(_message.Message):
-        __slots__ = ["key", "value"]
-        KEY_FIELD_NUMBER: _ClassVar[int]
-        VALUE_FIELD_NUMBER: _ClassVar[int]
-        key: str
-        value: str
-        def __init__(self, key: _Optional[str] = ..., value: _Optional[str] = ...) -> None: ...
-    JOB_PARAMS_FIELD_NUMBER: _ClassVar[int]
-    NAME_FIELD_NUMBER: _ClassVar[int]
-    RULE_PARAMS_FIELD_NUMBER: _ClassVar[int]
-    VERSION_FIELD_NUMBER: _ClassVar[int]
-    job_params: _containers.RepeatedScalarFieldContainer[str]
-    name: str
-    rule_params: _containers.ScalarMap[str, str]
-    version: str
-    def __init__(self, name: _Optional[str] = ..., version: _Optional[str] = ..., rule_params: _Optional[_Mapping[str, str]] = ..., job_params: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class RuleStatus(int, metaclass=_enum_type_wrapper.EnumTypeWrapper):
     __slots__ = []

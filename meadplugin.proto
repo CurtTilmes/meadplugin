@@ -10,40 +10,33 @@ service meadplugin {
   rpc Insert (InsertRequest) returns (InsertResponse) {}
 }
 
+message IdentifyRequest {
+}
+
+message IdentifyResponse {
+  string name = 1;
+  string version = 2;
+  repeated string rules = 3;
+}
+
 message EvaluateRequest {
-  string rule_name = 1;
+  string rule = 1;
   map<string,string> params = 2;
 }
 
 enum RuleStatus {
   RULE_STATUS_UNSPECIFIED = 0;
   RULE_STATUS_SUCCESS = 1; 
-  RULE_STATUS_SKIP = 2;      // Don't run this job, just move it immediately to state skipped
-  RULE_STATUS_RETRY = 3;     // Missing something, try again later
-  RULE_STATUS_FAILURE = 4;   // This rule will never succeed, move it to the state error
+  RULE_STATUS_FAILURE = 2;
+  RULE_STATUS_RETRY = 3;
+  RULE_STATUS_SKIP = 4;
 }
 
 message EvaluateResponse {
   RuleStatus status = 1;
   string message = 2;
-  map<string,string> job_params = 3;
+  map<string,string> params = 3;
   repeated string files = 4;
-}
-
-message IdentifyRequest {
-}
-
-message Rule {
-  string name = 1;
-  string version = 2;
-  map<string,string> rule_params = 3;
-  repeated string job_params = 4;
-}
-
-message IdentifyResponse {
-  string name = 1;
-  string version = 2;
-  repeated Rule rules = 3;
 }
 
 message InsertRequest {

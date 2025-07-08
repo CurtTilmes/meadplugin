@@ -24,45 +24,29 @@ On startup and periodically, MEAD calls each plugin with an _Identify_ request.
 
 Response:
 ```
-     name: My Cool Plugin
+     name: MyPlugin
      version: 1.2.3-4
      rules:
-       - name: some_rule
-         version: 2.3.1-5
-         rule_params:
-           some_key: some_value
-           key2: value2
-         job_params:
-          - key
-          - ESDT
-       
+       - some_rule
+       - another_rule 
 ```
-
-The ```rule_params``` defines specific parameters that must be true for this rule to be successfully 
-executed by this plugins.  For example, if the rule was ```get-orbital-parameters```, the
-```rule_params``` might include ```sensor=Aura-OMI``` to note that this plugin knows how to look up
-orbital parameters for that sensor.
-
-```job_params``` are other parameters that the rule uses to evaluate the rule.
 
 ## Evaluate
 
 Evaluate Request:
 ```
-rule_name: some_rule
+rule: some_rule
 params:
   ESDT: MOD03
   collection: "061"
   key: 2025156.1150
 ```
 
-The ```params``` in an _Evaluate_ call will match those described for the rule in _Identify_.
-
 Evaluate Response:
 ```
-status: SUCCESS or SKIP or RETRY or FAILURE
+status: SUCCESS or FAILURE or RETRY or SKIP
 message: "arbitrary string"
-job_params:
+params:
   some_key: some_value
 files:
   - modaps-lads/MOD03/MOD03.A2025156.1150.061.2025156165003.hdf
@@ -74,20 +58,22 @@ or input files needed for execution of the job will be returned.
 If the job should be skipped, status will be set to ```SKIP``` (for example, the required input
 data were not captured by the observatory due to some maneuver, or land processing is being
 performed, but the tile is all water, or daytime processing is needed, but the data are all night.)
-This is a perfectly normal response.
+This is a perfectly normal response, and will cause the Job to go immediately to the complete state.
 
-If the required input is not available, but might be available later, ```RETRY``` is returned.
+If some data needed by the rule is unavailable, but may become available later, ```RETRY``` is
+returned. 
 
-If something went wrong in the rule evaluation, ```FAILURE``` is returned.  This indicates that
-evaluation proceeded normally, but due to something, the evaluation as submitted can never
-succeed.  The Job should move to the error state and be brought to the attention of someone.  The
-Plan and Jobs will need to be reworked.  Note this is distinct from an Error.
+If something is required by the rule, but is unavailable and will NEVER become available ```FAILURE```
+can be returned.   Note this is distinct from an Error.  This causes the Job to immediately go to
+the error state.
 
 An ```Error``` can also be returned from the call.  This could be due to a down database or
 external service, or the plugin is broken in some way.  It doesn't necessarily indicate a problem
 with the Plan or Job, just that something in the infrastructure isn't able to successfully execute
 the rule at this time.  The Job is treated the same as a ```RETRY``` but an ```Error``` should be brought
 to the attention of an administrator.
+
+For any return, either a normal return, or an Error return, a message can accompany the return.
 
 # License
 Copyright © 2023 United States Government as represented by the Administrator 
