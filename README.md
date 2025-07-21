@@ -35,6 +35,7 @@ Response:
 
 Evaluate Request:
 ```
+request_id: a616bb6a-d8a7-4ba4-b27f-b566fef2163b
 rule: some_rule
 params:
   ESDT: MOD03
@@ -44,6 +45,7 @@ params:
 
 Evaluate Response:
 ```
+request_id: a616bb6a-d8a7-4ba4-b27f-b566fef2163b
 status: SUCCESS or FAILURE or RETRY or SKIP
 message: "arbitrary string"
 params:

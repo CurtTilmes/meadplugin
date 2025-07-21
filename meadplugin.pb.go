@@ -174,8 +174,9 @@ func (x *IdentifyResponse) GetRules() []string {
 
 type EvaluateRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Rule          string                 `protobuf:"bytes,1,opt,name=rule,proto3" json:"rule,omitempty"`
-	Params        map[string]string      `protobuf:"bytes,2,rep,name=params,proto3" json:"params,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Rule          string                 `protobuf:"bytes,2,opt,name=rule,proto3" json:"rule,omitempty"`
+	Params        map[string]string      `protobuf:"bytes,3,rep,name=params,proto3" json:"params,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -210,6 +211,13 @@ func (*EvaluateRequest) Descriptor() ([]byte, []int) {
 	return file_meadplugin_proto_rawDescGZIP(), []int{2}
 }
 
+func (x *EvaluateRequest) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
+}
+
 func (x *EvaluateRequest) GetRule() string {
 	if x != nil {
 		return x.Rule
@@ -226,10 +234,11 @@ func (x *EvaluateRequest) GetParams() map[string]string {
 
 type EvaluateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Status        RuleStatus             `protobuf:"varint,1,opt,name=status,proto3,enum=meadplugin.RuleStatus" json:"status,omitempty"`
-	Message       string                 `protobuf:"bytes,2,opt,name=message,proto3" json:"message,omitempty"`
-	Params        map[string]string      `protobuf:"bytes,3,rep,name=params,proto3" json:"params,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	Files         []string               `protobuf:"bytes,4,rep,name=files,proto3" json:"files,omitempty"`
+	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
+	Status        RuleStatus             `protobuf:"varint,2,opt,name=status,proto3,enum=meadplugin.RuleStatus" json:"status,omitempty"`
+	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
+	Params        map[string]string      `protobuf:"bytes,4,rep,name=params,proto3" json:"params,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	Files         []string               `protobuf:"bytes,5,rep,name=files,proto3" json:"files,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -262,6 +271,13 @@ func (x *EvaluateResponse) ProtoReflect() protoreflect.Message {
 // Deprecated: Use EvaluateResponse.ProtoReflect.Descriptor instead.
 func (*EvaluateResponse) Descriptor() ([]byte, []int) {
 	return file_meadplugin_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *EvaluateResponse) GetRequestId() string {
+	if x != nil {
+		return x.RequestId
+	}
+	return ""
 }
 
 func (x *EvaluateResponse) GetStatus() RuleStatus {
@@ -390,18 +406,22 @@ const file_meadplugin_proto_rawDesc = "" +
 	"\x10IdentifyResponse\x12\x12\n" +
 	"\x04name\x18\x01 \x01(\tR\x04name\x12\x18\n" +
 	"\aversion\x18\x02 \x01(\tR\aversion\x12\x14\n" +
-	"\x05rules\x18\x03 \x03(\tR\x05rules\"\xa1\x01\n" +
-	"\x0fEvaluateRequest\x12\x12\n" +
-	"\x04rule\x18\x01 \x01(\tR\x04rule\x12?\n" +
-	"\x06params\x18\x02 \x03(\v2'.meadplugin.EvaluateRequest.ParamsEntryR\x06params\x1a9\n" +
+	"\x05rules\x18\x03 \x03(\tR\x05rules\"\xc0\x01\n" +
+	"\x0fEvaluateRequest\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\x12\x12\n" +
+	"\x04rule\x18\x02 \x01(\tR\x04rule\x12?\n" +
+	"\x06params\x18\x03 \x03(\v2'.meadplugin.EvaluateRequest.ParamsEntryR\x06params\x1a9\n" +
 	"\vParamsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xef\x01\n" +
-	"\x10EvaluateResponse\x12.\n" +
-	"\x06status\x18\x01 \x01(\x0e2\x16.meadplugin.RuleStatusR\x06status\x12\x18\n" +
-	"\amessage\x18\x02 \x01(\tR\amessage\x12@\n" +
-	"\x06params\x18\x03 \x03(\v2(.meadplugin.EvaluateResponse.ParamsEntryR\x06params\x12\x14\n" +
-	"\x05files\x18\x04 \x03(\tR\x05files\x1a9\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x8e\x02\n" +
+	"\x10EvaluateResponse\x12\x1d\n" +
+	"\n" +
+	"request_id\x18\x01 \x01(\tR\trequestId\x12.\n" +
+	"\x06status\x18\x02 \x01(\x0e2\x16.meadplugin.RuleStatusR\x06status\x12\x18\n" +
+	"\amessage\x18\x03 \x01(\tR\amessage\x12@\n" +
+	"\x06params\x18\x04 \x03(\v2(.meadplugin.EvaluateResponse.ParamsEntryR\x06params\x12\x14\n" +
+	"\x05files\x18\x05 \x03(\tR\x05files\x1a9\n" +
 	"\vParamsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
 	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"%\n" +

@@ -12,7 +12,7 @@ RULE_STATUS_SUCCESS: RuleStatus
 RULE_STATUS_UNSPECIFIED: RuleStatus
 
 class EvaluateRequest(_message.Message):
-    __slots__ = ["params", "rule"]
+    __slots__ = ["params", "request_id", "rule"]
     class ParamsEntry(_message.Message):
         __slots__ = ["key", "value"]
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -21,13 +21,15 @@ class EvaluateRequest(_message.Message):
         value: str
         def __init__(self, key: _Optional[str] = ..., value: _Optional[str] = ...) -> None: ...
     PARAMS_FIELD_NUMBER: _ClassVar[int]
+    REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
     RULE_FIELD_NUMBER: _ClassVar[int]
     params: _containers.ScalarMap[str, str]
+    request_id: str
     rule: str
-    def __init__(self, rule: _Optional[str] = ..., params: _Optional[_Mapping[str, str]] = ...) -> None: ...
+    def __init__(self, request_id: _Optional[str] = ..., rule: _Optional[str] = ..., params: _Optional[_Mapping[str, str]] = ...) -> None: ...
 
 class EvaluateResponse(_message.Message):
-    __slots__ = ["files", "message", "params", "status"]
+    __slots__ = ["files", "message", "params", "request_id", "status"]
     class ParamsEntry(_message.Message):
         __slots__ = ["key", "value"]
         KEY_FIELD_NUMBER: _ClassVar[int]
@@ -38,12 +40,14 @@ class EvaluateResponse(_message.Message):
     FILES_FIELD_NUMBER: _ClassVar[int]
     MESSAGE_FIELD_NUMBER: _ClassVar[int]
     PARAMS_FIELD_NUMBER: _ClassVar[int]
+    REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
     STATUS_FIELD_NUMBER: _ClassVar[int]
     files: _containers.RepeatedScalarFieldContainer[str]
     message: str
     params: _containers.ScalarMap[str, str]
+    request_id: str
     status: RuleStatus
-    def __init__(self, status: _Optional[_Union[RuleStatus, str]] = ..., message: _Optional[str] = ..., params: _Optional[_Mapping[str, str]] = ..., files: _Optional[_Iterable[str]] = ...) -> None: ...
+    def __init__(self, request_id: _Optional[str] = ..., status: _Optional[_Union[RuleStatus, str]] = ..., message: _Optional[str] = ..., params: _Optional[_Mapping[str, str]] = ..., files: _Optional[_Iterable[str]] = ...) -> None: ...
 
 class IdentifyRequest(_message.Message):
     __slots__ = []
