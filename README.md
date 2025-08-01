@@ -51,11 +51,19 @@ message: "arbitrary string"
 params:
   some_key: some_value
 files:
-  - modaps-lads/MOD03/MOD03.A2025156.1150.061.2025156165003.hdf
+  - id: modaps-lads/MOD03/MOD03.A2025156.1150.061.2025156165003.hdf
+    metadata:
+      ESDT: MOD03
 ```
 
 If the rule succeeds, status will be set to ```SUCCESS``` and any additional params for the job
 or input files needed for execution of the job will be returned.
+
+```params``` are arbitrary key/value pairs that will be used in production for this job.
+
+```files``` is an array of files, each file includes at least an ```id``` and can optionally include
+arbtrary key/value pairs as associated metadata for the file.  Typical fields might include ESDT
+with type of data in the file, or a digital signature for the file.
 
 If the job should be skipped, status will be set to ```SKIP``` (for example, the required input
 data were not captured by the observatory due to some maneuver, or land processing is being

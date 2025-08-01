@@ -13,7 +13,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10meadplugin.proto\x12\nmeadplugin\"\x11\n\x0fIdentifyRequest\"@\n\x10IdentifyResponse\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\r\n\x05rules\x18\x03 \x03(\t\"\x9b\x01\n\x0f\x45valuateRequest\x12\x12\n\nrequest_id\x18\x01 \x01(\t\x12\x0c\n\x04rule\x18\x02 \x01(\t\x12\x37\n\x06params\x18\x03 \x03(\x0b\x32\'.meadplugin.EvaluateRequest.ParamsEntry\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xd7\x01\n\x10\x45valuateResponse\x12\x12\n\nrequest_id\x18\x01 \x01(\t\x12&\n\x06status\x18\x02 \x01(\x0e\x32\x16.meadplugin.RuleStatus\x12\x0f\n\x07message\x18\x03 \x01(\t\x12\x38\n\x06params\x18\x04 \x03(\x0b\x32(.meadplugin.EvaluateResponse.ParamsEntry\x12\r\n\x05\x66iles\x18\x05 \x03(\t\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\x1e\n\rInsertRequest\x12\r\n\x05\x66iles\x18\x01 \x03(\t\" \n\x0eInsertResponse\x12\x0e\n\x06status\x18\x01 \x01(\t*\x88\x01\n\nRuleStatus\x12\x1b\n\x17RULE_STATUS_UNSPECIFIED\x10\x00\x12\x17\n\x13RULE_STATUS_SUCCESS\x10\x01\x12\x17\n\x13RULE_STATUS_FAILURE\x10\x02\x12\x15\n\x11RULE_STATUS_RETRY\x10\x03\x12\x14\n\x10RULE_STATUS_SKIP\x10\x04\x32\xe1\x01\n\nmeadplugin\x12G\n\x08Identify\x12\x1b.meadplugin.IdentifyRequest\x1a\x1c.meadplugin.IdentifyResponse\"\x00\x12G\n\x08\x45valuate\x12\x1b.meadplugin.EvaluateRequest\x1a\x1c.meadplugin.EvaluateResponse\"\x00\x12\x41\n\x06Insert\x12\x19.meadplugin.InsertRequest\x1a\x1a.meadplugin.InsertResponse\"\x00\x42\x0eZ\x0c.;meadpluginb\x06proto3')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x10meadplugin.proto\x12\nmeadplugin\"\x11\n\x0fIdentifyRequest\"@\n\x10IdentifyResponse\x12\x0c\n\x04name\x18\x01 \x01(\t\x12\x0f\n\x07version\x18\x02 \x01(\t\x12\r\n\x05rules\x18\x03 \x03(\t\"\x9b\x01\n\x0f\x45valuateRequest\x12\x12\n\nrequest_id\x18\x01 \x01(\t\x12\x0c\n\x04rule\x18\x02 \x01(\t\x12\x37\n\x06params\x18\x03 \x03(\x0b\x32\'.meadplugin.EvaluateRequest.ParamsEntry\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"u\n\x04\x46ile\x12\n\n\x02id\x18\x01 \x01(\t\x12\x30\n\x08metadata\x18\x02 \x03(\x0b\x32\x1e.meadplugin.File.MetadataEntry\x1a/\n\rMetadataEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"\xe9\x01\n\x10\x45valuateResponse\x12\x12\n\nrequest_id\x18\x01 \x01(\t\x12&\n\x06status\x18\x02 \x01(\x0e\x32\x16.meadplugin.RuleStatus\x12\x0f\n\x07message\x18\x03 \x01(\t\x12\x38\n\x06params\x18\x04 \x03(\x0b\x32(.meadplugin.EvaluateResponse.ParamsEntry\x12\x1f\n\x05\x66iles\x18\x05 \x03(\x0b\x32\x10.meadplugin.File\x1a-\n\x0bParamsEntry\x12\x0b\n\x03key\x18\x01 \x01(\t\x12\r\n\x05value\x18\x02 \x01(\t:\x02\x38\x01\"0\n\rInsertRequest\x12\x1f\n\x05\x66iles\x18\x01 \x03(\x0b\x32\x10.meadplugin.File\" \n\x0eInsertResponse\x12\x0e\n\x06status\x18\x01 \x01(\t*\x88\x01\n\nRuleStatus\x12\x1b\n\x17RULE_STATUS_UNSPECIFIED\x10\x00\x12\x17\n\x13RULE_STATUS_SUCCESS\x10\x01\x12\x17\n\x13RULE_STATUS_FAILURE\x10\x02\x12\x15\n\x11RULE_STATUS_RETRY\x10\x03\x12\x14\n\x10RULE_STATUS_SKIP\x10\x04\x32\xe1\x01\n\nmeadplugin\x12G\n\x08Identify\x12\x1b.meadplugin.IdentifyRequest\x1a\x1c.meadplugin.IdentifyResponse\"\x00\x12G\n\x08\x45valuate\x12\x1b.meadplugin.EvaluateRequest\x1a\x1c.meadplugin.EvaluateResponse\"\x00\x12\x41\n\x06Insert\x12\x19.meadplugin.InsertRequest\x1a\x1a.meadplugin.InsertResponse\"\x00\x42\x0eZ\x0c.;meadpluginb\x06proto3')
 
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, globals())
 _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'meadplugin_pb2', globals())
@@ -23,10 +23,12 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   DESCRIPTOR._serialized_options = b'Z\014.;meadplugin'
   _EVALUATEREQUEST_PARAMSENTRY._options = None
   _EVALUATEREQUEST_PARAMSENTRY._serialized_options = b'8\001'
+  _FILE_METADATAENTRY._options = None
+  _FILE_METADATAENTRY._serialized_options = b'8\001'
   _EVALUATERESPONSE_PARAMSENTRY._options = None
   _EVALUATERESPONSE_PARAMSENTRY._serialized_options = b'8\001'
-  _RULESTATUS._serialized_start=560
-  _RULESTATUS._serialized_end=696
+  _RULESTATUS._serialized_start=715
+  _RULESTATUS._serialized_end=851
   _IDENTIFYREQUEST._serialized_start=32
   _IDENTIFYREQUEST._serialized_end=49
   _IDENTIFYRESPONSE._serialized_start=51
@@ -35,14 +37,18 @@ if _descriptor._USE_C_DESCRIPTORS == False:
   _EVALUATEREQUEST._serialized_end=273
   _EVALUATEREQUEST_PARAMSENTRY._serialized_start=228
   _EVALUATEREQUEST_PARAMSENTRY._serialized_end=273
-  _EVALUATERESPONSE._serialized_start=276
-  _EVALUATERESPONSE._serialized_end=491
+  _FILE._serialized_start=275
+  _FILE._serialized_end=392
+  _FILE_METADATAENTRY._serialized_start=345
+  _FILE_METADATAENTRY._serialized_end=392
+  _EVALUATERESPONSE._serialized_start=395
+  _EVALUATERESPONSE._serialized_end=628
   _EVALUATERESPONSE_PARAMSENTRY._serialized_start=228
   _EVALUATERESPONSE_PARAMSENTRY._serialized_end=273
-  _INSERTREQUEST._serialized_start=493
-  _INSERTREQUEST._serialized_end=523
-  _INSERTRESPONSE._serialized_start=525
-  _INSERTRESPONSE._serialized_end=557
-  _MEADPLUGIN._serialized_start=699
-  _MEADPLUGIN._serialized_end=924
+  _INSERTREQUEST._serialized_start=630
+  _INSERTREQUEST._serialized_end=678
+  _INSERTRESPONSE._serialized_start=680
+  _INSERTRESPONSE._serialized_end=712
+  _MEADPLUGIN._serialized_start=854
+  _MEADPLUGIN._serialized_end=1079
 # @@protoc_insertion_point(module_scope)

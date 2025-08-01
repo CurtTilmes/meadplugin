@@ -42,12 +42,27 @@ class EvaluateResponse(_message.Message):
     PARAMS_FIELD_NUMBER: _ClassVar[int]
     REQUEST_ID_FIELD_NUMBER: _ClassVar[int]
     STATUS_FIELD_NUMBER: _ClassVar[int]
-    files: _containers.RepeatedScalarFieldContainer[str]
+    files: _containers.RepeatedCompositeFieldContainer[File]
     message: str
     params: _containers.ScalarMap[str, str]
     request_id: str
     status: RuleStatus
-    def __init__(self, request_id: _Optional[str] = ..., status: _Optional[_Union[RuleStatus, str]] = ..., message: _Optional[str] = ..., params: _Optional[_Mapping[str, str]] = ..., files: _Optional[_Iterable[str]] = ...) -> None: ...
+    def __init__(self, request_id: _Optional[str] = ..., status: _Optional[_Union[RuleStatus, str]] = ..., message: _Optional[str] = ..., params: _Optional[_Mapping[str, str]] = ..., files: _Optional[_Iterable[_Union[File, _Mapping]]] = ...) -> None: ...
+
+class File(_message.Message):
+    __slots__ = ["id", "metadata"]
+    class MetadataEntry(_message.Message):
+        __slots__ = ["key", "value"]
+        KEY_FIELD_NUMBER: _ClassVar[int]
+        VALUE_FIELD_NUMBER: _ClassVar[int]
+        key: str
+        value: str
+        def __init__(self, key: _Optional[str] = ..., value: _Optional[str] = ...) -> None: ...
+    ID_FIELD_NUMBER: _ClassVar[int]
+    METADATA_FIELD_NUMBER: _ClassVar[int]
+    id: str
+    metadata: _containers.ScalarMap[str, str]
+    def __init__(self, id: _Optional[str] = ..., metadata: _Optional[_Mapping[str, str]] = ...) -> None: ...
 
 class IdentifyRequest(_message.Message):
     __slots__ = []
@@ -66,8 +81,8 @@ class IdentifyResponse(_message.Message):
 class InsertRequest(_message.Message):
     __slots__ = ["files"]
     FILES_FIELD_NUMBER: _ClassVar[int]
-    files: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, files: _Optional[_Iterable[str]] = ...) -> None: ...
+    files: _containers.RepeatedCompositeFieldContainer[File]
+    def __init__(self, files: _Optional[_Iterable[_Union[File, _Mapping]]] = ...) -> None: ...
 
 class InsertResponse(_message.Message):
     __slots__ = ["status"]

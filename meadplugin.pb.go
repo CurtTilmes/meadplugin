@@ -232,20 +232,72 @@ func (x *EvaluateRequest) GetParams() map[string]string {
 	return nil
 }
 
+type File struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Metadata      map[string]string      `protobuf:"bytes,2,rep,name=metadata,proto3" json:"metadata,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *File) Reset() {
+	*x = File{}
+	mi := &file_meadplugin_proto_msgTypes[3]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *File) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*File) ProtoMessage() {}
+
+func (x *File) ProtoReflect() protoreflect.Message {
+	mi := &file_meadplugin_proto_msgTypes[3]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use File.ProtoReflect.Descriptor instead.
+func (*File) Descriptor() ([]byte, []int) {
+	return file_meadplugin_proto_rawDescGZIP(), []int{3}
+}
+
+func (x *File) GetId() string {
+	if x != nil {
+		return x.Id
+	}
+	return ""
+}
+
+func (x *File) GetMetadata() map[string]string {
+	if x != nil {
+		return x.Metadata
+	}
+	return nil
+}
+
 type EvaluateResponse struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	RequestId     string                 `protobuf:"bytes,1,opt,name=request_id,json=requestId,proto3" json:"request_id,omitempty"`
 	Status        RuleStatus             `protobuf:"varint,2,opt,name=status,proto3,enum=meadplugin.RuleStatus" json:"status,omitempty"`
 	Message       string                 `protobuf:"bytes,3,opt,name=message,proto3" json:"message,omitempty"`
 	Params        map[string]string      `protobuf:"bytes,4,rep,name=params,proto3" json:"params,omitempty" protobuf_key:"bytes,1,opt,name=key" protobuf_val:"bytes,2,opt,name=value"`
-	Files         []string               `protobuf:"bytes,5,rep,name=files,proto3" json:"files,omitempty"`
+	Files         []*File                `protobuf:"bytes,5,rep,name=files,proto3" json:"files,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *EvaluateResponse) Reset() {
 	*x = EvaluateResponse{}
-	mi := &file_meadplugin_proto_msgTypes[3]
+	mi := &file_meadplugin_proto_msgTypes[4]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -257,7 +309,7 @@ func (x *EvaluateResponse) String() string {
 func (*EvaluateResponse) ProtoMessage() {}
 
 func (x *EvaluateResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_meadplugin_proto_msgTypes[3]
+	mi := &file_meadplugin_proto_msgTypes[4]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -270,7 +322,7 @@ func (x *EvaluateResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use EvaluateResponse.ProtoReflect.Descriptor instead.
 func (*EvaluateResponse) Descriptor() ([]byte, []int) {
-	return file_meadplugin_proto_rawDescGZIP(), []int{3}
+	return file_meadplugin_proto_rawDescGZIP(), []int{4}
 }
 
 func (x *EvaluateResponse) GetRequestId() string {
@@ -301,7 +353,7 @@ func (x *EvaluateResponse) GetParams() map[string]string {
 	return nil
 }
 
-func (x *EvaluateResponse) GetFiles() []string {
+func (x *EvaluateResponse) GetFiles() []*File {
 	if x != nil {
 		return x.Files
 	}
@@ -310,14 +362,14 @@ func (x *EvaluateResponse) GetFiles() []string {
 
 type InsertRequest struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Files         []string               `protobuf:"bytes,1,rep,name=files,proto3" json:"files,omitempty"`
+	Files         []*File                `protobuf:"bytes,1,rep,name=files,proto3" json:"files,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *InsertRequest) Reset() {
 	*x = InsertRequest{}
-	mi := &file_meadplugin_proto_msgTypes[4]
+	mi := &file_meadplugin_proto_msgTypes[5]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -329,7 +381,7 @@ func (x *InsertRequest) String() string {
 func (*InsertRequest) ProtoMessage() {}
 
 func (x *InsertRequest) ProtoReflect() protoreflect.Message {
-	mi := &file_meadplugin_proto_msgTypes[4]
+	mi := &file_meadplugin_proto_msgTypes[5]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -342,10 +394,10 @@ func (x *InsertRequest) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InsertRequest.ProtoReflect.Descriptor instead.
 func (*InsertRequest) Descriptor() ([]byte, []int) {
-	return file_meadplugin_proto_rawDescGZIP(), []int{4}
+	return file_meadplugin_proto_rawDescGZIP(), []int{5}
 }
 
-func (x *InsertRequest) GetFiles() []string {
+func (x *InsertRequest) GetFiles() []*File {
 	if x != nil {
 		return x.Files
 	}
@@ -361,7 +413,7 @@ type InsertResponse struct {
 
 func (x *InsertResponse) Reset() {
 	*x = InsertResponse{}
-	mi := &file_meadplugin_proto_msgTypes[5]
+	mi := &file_meadplugin_proto_msgTypes[6]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -373,7 +425,7 @@ func (x *InsertResponse) String() string {
 func (*InsertResponse) ProtoMessage() {}
 
 func (x *InsertResponse) ProtoReflect() protoreflect.Message {
-	mi := &file_meadplugin_proto_msgTypes[5]
+	mi := &file_meadplugin_proto_msgTypes[6]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -386,7 +438,7 @@ func (x *InsertResponse) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use InsertResponse.ProtoReflect.Descriptor instead.
 func (*InsertResponse) Descriptor() ([]byte, []int) {
-	return file_meadplugin_proto_rawDescGZIP(), []int{5}
+	return file_meadplugin_proto_rawDescGZIP(), []int{6}
 }
 
 func (x *InsertResponse) GetStatus() string {
@@ -414,19 +466,25 @@ const file_meadplugin_proto_rawDesc = "" +
 	"\x06params\x18\x03 \x03(\v2'.meadplugin.EvaluateRequest.ParamsEntryR\x06params\x1a9\n" +
 	"\vParamsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x8e\x02\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\x8f\x01\n" +
+	"\x04File\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12:\n" +
+	"\bmetadata\x18\x02 \x03(\v2\x1e.meadplugin.File.MetadataEntryR\bmetadata\x1a;\n" +
+	"\rMetadataEntry\x12\x10\n" +
+	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"\xa0\x02\n" +
 	"\x10EvaluateResponse\x12\x1d\n" +
 	"\n" +
 	"request_id\x18\x01 \x01(\tR\trequestId\x12.\n" +
 	"\x06status\x18\x02 \x01(\x0e2\x16.meadplugin.RuleStatusR\x06status\x12\x18\n" +
 	"\amessage\x18\x03 \x01(\tR\amessage\x12@\n" +
-	"\x06params\x18\x04 \x03(\v2(.meadplugin.EvaluateResponse.ParamsEntryR\x06params\x12\x14\n" +
-	"\x05files\x18\x05 \x03(\tR\x05files\x1a9\n" +
+	"\x06params\x18\x04 \x03(\v2(.meadplugin.EvaluateResponse.ParamsEntryR\x06params\x12&\n" +
+	"\x05files\x18\x05 \x03(\v2\x10.meadplugin.FileR\x05files\x1a9\n" +
 	"\vParamsEntry\x12\x10\n" +
 	"\x03key\x18\x01 \x01(\tR\x03key\x12\x14\n" +
-	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"%\n" +
-	"\rInsertRequest\x12\x14\n" +
-	"\x05files\x18\x01 \x03(\tR\x05files\"(\n" +
+	"\x05value\x18\x02 \x01(\tR\x05value:\x028\x01\"7\n" +
+	"\rInsertRequest\x12&\n" +
+	"\x05files\x18\x01 \x03(\v2\x10.meadplugin.FileR\x05files\"(\n" +
 	"\x0eInsertResponse\x12\x16\n" +
 	"\x06status\x18\x01 \x01(\tR\x06status*\x88\x01\n" +
 	"\n" +
@@ -455,33 +513,38 @@ func file_meadplugin_proto_rawDescGZIP() []byte {
 }
 
 var file_meadplugin_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
-var file_meadplugin_proto_msgTypes = make([]protoimpl.MessageInfo, 8)
+var file_meadplugin_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_meadplugin_proto_goTypes = []any{
 	(RuleStatus)(0),          // 0: meadplugin.RuleStatus
 	(*IdentifyRequest)(nil),  // 1: meadplugin.IdentifyRequest
 	(*IdentifyResponse)(nil), // 2: meadplugin.IdentifyResponse
 	(*EvaluateRequest)(nil),  // 3: meadplugin.EvaluateRequest
-	(*EvaluateResponse)(nil), // 4: meadplugin.EvaluateResponse
-	(*InsertRequest)(nil),    // 5: meadplugin.InsertRequest
-	(*InsertResponse)(nil),   // 6: meadplugin.InsertResponse
-	nil,                      // 7: meadplugin.EvaluateRequest.ParamsEntry
-	nil,                      // 8: meadplugin.EvaluateResponse.ParamsEntry
+	(*File)(nil),             // 4: meadplugin.File
+	(*EvaluateResponse)(nil), // 5: meadplugin.EvaluateResponse
+	(*InsertRequest)(nil),    // 6: meadplugin.InsertRequest
+	(*InsertResponse)(nil),   // 7: meadplugin.InsertResponse
+	nil,                      // 8: meadplugin.EvaluateRequest.ParamsEntry
+	nil,                      // 9: meadplugin.File.MetadataEntry
+	nil,                      // 10: meadplugin.EvaluateResponse.ParamsEntry
 }
 var file_meadplugin_proto_depIdxs = []int32{
-	7, // 0: meadplugin.EvaluateRequest.params:type_name -> meadplugin.EvaluateRequest.ParamsEntry
-	0, // 1: meadplugin.EvaluateResponse.status:type_name -> meadplugin.RuleStatus
-	8, // 2: meadplugin.EvaluateResponse.params:type_name -> meadplugin.EvaluateResponse.ParamsEntry
-	1, // 3: meadplugin.meadplugin.Identify:input_type -> meadplugin.IdentifyRequest
-	3, // 4: meadplugin.meadplugin.Evaluate:input_type -> meadplugin.EvaluateRequest
-	5, // 5: meadplugin.meadplugin.Insert:input_type -> meadplugin.InsertRequest
-	2, // 6: meadplugin.meadplugin.Identify:output_type -> meadplugin.IdentifyResponse
-	4, // 7: meadplugin.meadplugin.Evaluate:output_type -> meadplugin.EvaluateResponse
-	6, // 8: meadplugin.meadplugin.Insert:output_type -> meadplugin.InsertResponse
-	6, // [6:9] is the sub-list for method output_type
-	3, // [3:6] is the sub-list for method input_type
-	3, // [3:3] is the sub-list for extension type_name
-	3, // [3:3] is the sub-list for extension extendee
-	0, // [0:3] is the sub-list for field type_name
+	8,  // 0: meadplugin.EvaluateRequest.params:type_name -> meadplugin.EvaluateRequest.ParamsEntry
+	9,  // 1: meadplugin.File.metadata:type_name -> meadplugin.File.MetadataEntry
+	0,  // 2: meadplugin.EvaluateResponse.status:type_name -> meadplugin.RuleStatus
+	10, // 3: meadplugin.EvaluateResponse.params:type_name -> meadplugin.EvaluateResponse.ParamsEntry
+	4,  // 4: meadplugin.EvaluateResponse.files:type_name -> meadplugin.File
+	4,  // 5: meadplugin.InsertRequest.files:type_name -> meadplugin.File
+	1,  // 6: meadplugin.meadplugin.Identify:input_type -> meadplugin.IdentifyRequest
+	3,  // 7: meadplugin.meadplugin.Evaluate:input_type -> meadplugin.EvaluateRequest
+	6,  // 8: meadplugin.meadplugin.Insert:input_type -> meadplugin.InsertRequest
+	2,  // 9: meadplugin.meadplugin.Identify:output_type -> meadplugin.IdentifyResponse
+	5,  // 10: meadplugin.meadplugin.Evaluate:output_type -> meadplugin.EvaluateResponse
+	7,  // 11: meadplugin.meadplugin.Insert:output_type -> meadplugin.InsertResponse
+	9,  // [9:12] is the sub-list for method output_type
+	6,  // [6:9] is the sub-list for method input_type
+	6,  // [6:6] is the sub-list for extension type_name
+	6,  // [6:6] is the sub-list for extension extendee
+	0,  // [0:6] is the sub-list for field type_name
 }
 
 func init() { file_meadplugin_proto_init() }
@@ -495,7 +558,7 @@ func file_meadplugin_proto_init() {
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_meadplugin_proto_rawDesc), len(file_meadplugin_proto_rawDesc)),
 			NumEnums:      1,
-			NumMessages:   8,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

@@ -33,16 +33,21 @@ enum RuleStatus {
   RULE_STATUS_SKIP = 4;
 }
 
+message File {
+  string id = 1;
+  map<string,string> metadata = 2;
+}
+
 message EvaluateResponse {
   string request_id = 1;
   RuleStatus status = 2;
   string message = 3;
   map<string,string> params = 4;
-  repeated string files = 5;
+  repeated File files = 5;
 }
 
 message InsertRequest {
-  repeated string files = 1;
+  repeated File files = 1;
 }
 
 message InsertResponse {
