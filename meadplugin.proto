@@ -6,6 +6,7 @@ package meadplugin;
 
 service meadplugin {
   rpc Identify (IdentifyRequest) returns (IdentifyResponse) {}
+  rpc Help (HelpRequest) returns (HelpResponse) {}
   rpc Evaluate (EvaluateRequest) returns (EvaluateResponse) {}
   rpc Insert (InsertRequest) returns (InsertResponse) {}
 }
@@ -17,6 +18,16 @@ message IdentifyResponse {
   string name = 1;
   string version = 2;
   repeated string rules = 3;
+}
+
+message HelpRequest {
+  string request_id = 1;
+  string rule = 2;
+}
+
+message HelpResponse {
+  string short = 1;
+  string long = 2;
 }
 
 message EvaluateRequest {
@@ -33,23 +44,23 @@ enum RuleStatus {
   RULE_STATUS_SKIP = 4;
 }
 
-message File {
+message Item {
   string id = 1;
   map<string,string> metadata = 2;
 }
 
 message EvaluateResponse {
-  string request_id = 1;
-  RuleStatus status = 2;
-  string message = 3;
-  map<string,string> params = 4;
-  repeated File files = 5;
+  RuleStatus status = 1;
+  string message = 2;
+  map<string,string> params = 3;
+  repeated Item items = 4;
 }
 
 message InsertRequest {
-  repeated File files = 1;
+  repeated Item items = 1;
 }
 
 message InsertResponse {
   string status = 1;
+  string message = 2;
 }
