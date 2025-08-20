@@ -603,10 +603,11 @@ const file_meadplugin_proto_rawDesc = "" +
 	"\x13RULE_STATUS_SUCCESS\x10\x01\x12\x17\n" +
 	"\x13RULE_STATUS_FAILURE\x10\x02\x12\x15\n" +
 	"\x11RULE_STATUS_RETRY\x10\x03\x12\x14\n" +
-	"\x10RULE_STATUS_SKIP\x10\x042\xe1\x01\n" +
+	"\x10RULE_STATUS_SKIP\x10\x042\x9e\x02\n" +
 	"\n" +
 	"meadplugin\x12G\n" +
-	"\bIdentify\x12\x1b.meadplugin.IdentifyRequest\x1a\x1c.meadplugin.IdentifyResponse\"\x00\x12G\n" +
+	"\bIdentify\x12\x1b.meadplugin.IdentifyRequest\x1a\x1c.meadplugin.IdentifyResponse\"\x00\x12;\n" +
+	"\x04Help\x12\x17.meadplugin.HelpRequest\x1a\x18.meadplugin.HelpResponse\"\x00\x12G\n" +
 	"\bEvaluate\x12\x1b.meadplugin.EvaluateRequest\x1a\x1c.meadplugin.EvaluateResponse\"\x00\x12A\n" +
 	"\x06Insert\x12\x19.meadplugin.InsertRequest\x1a\x1a.meadplugin.InsertResponse\"\x00B\x0eZ\f.;meadpluginb\x06proto3"
 
@@ -647,13 +648,15 @@ var file_meadplugin_proto_depIdxs = []int32{
 	6,  // 4: meadplugin.EvaluateResponse.items:type_name -> meadplugin.Item
 	6,  // 5: meadplugin.InsertRequest.items:type_name -> meadplugin.Item
 	1,  // 6: meadplugin.meadplugin.Identify:input_type -> meadplugin.IdentifyRequest
-	5,  // 7: meadplugin.meadplugin.Evaluate:input_type -> meadplugin.EvaluateRequest
-	8,  // 8: meadplugin.meadplugin.Insert:input_type -> meadplugin.InsertRequest
-	2,  // 9: meadplugin.meadplugin.Identify:output_type -> meadplugin.IdentifyResponse
-	7,  // 10: meadplugin.meadplugin.Evaluate:output_type -> meadplugin.EvaluateResponse
-	9,  // 11: meadplugin.meadplugin.Insert:output_type -> meadplugin.InsertResponse
-	9,  // [9:12] is the sub-list for method output_type
-	6,  // [6:9] is the sub-list for method input_type
+	3,  // 7: meadplugin.meadplugin.Help:input_type -> meadplugin.HelpRequest
+	5,  // 8: meadplugin.meadplugin.Evaluate:input_type -> meadplugin.EvaluateRequest
+	8,  // 9: meadplugin.meadplugin.Insert:input_type -> meadplugin.InsertRequest
+	2,  // 10: meadplugin.meadplugin.Identify:output_type -> meadplugin.IdentifyResponse
+	4,  // 11: meadplugin.meadplugin.Help:output_type -> meadplugin.HelpResponse
+	7,  // 12: meadplugin.meadplugin.Evaluate:output_type -> meadplugin.EvaluateResponse
+	9,  // 13: meadplugin.meadplugin.Insert:output_type -> meadplugin.InsertResponse
+	10, // [10:14] is the sub-list for method output_type
+	6,  // [6:10] is the sub-list for method input_type
 	6,  // [6:6] is the sub-list for extension type_name
 	6,  // [6:6] is the sub-list for extension extendee
 	0,  // [0:6] is the sub-list for field type_name

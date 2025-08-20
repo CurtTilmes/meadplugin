@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	Meadplugin_Identify_FullMethodName = "/meadplugin.meadplugin/Identify"
+	Meadplugin_Help_FullMethodName     = "/meadplugin.meadplugin/Help"
 	Meadplugin_Evaluate_FullMethodName = "/meadplugin.meadplugin/Evaluate"
 	Meadplugin_Insert_FullMethodName   = "/meadplugin.meadplugin/Insert"
 )
@@ -29,6 +30,7 @@ const (
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 type MeadpluginClient interface {
 	Identify(ctx context.Context, in *IdentifyRequest, opts ...grpc.CallOption) (*IdentifyResponse, error)
+	Help(ctx context.Context, in *HelpRequest, opts ...grpc.CallOption) (*HelpResponse, error)
 	Evaluate(ctx context.Context, in *EvaluateRequest, opts ...grpc.CallOption) (*EvaluateResponse, error)
 	Insert(ctx context.Context, in *InsertRequest, opts ...grpc.CallOption) (*InsertResponse, error)
 }
@@ -45,6 +47,16 @@ func (c *meadpluginClient) Identify(ctx context.Context, in *IdentifyRequest, op
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(IdentifyResponse)
 	err := c.cc.Invoke(ctx, Meadplugin_Identify_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *meadpluginClient) Help(ctx context.Context, in *HelpRequest, opts ...grpc.CallOption) (*HelpResponse, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(HelpResponse)
+	err := c.cc.Invoke(ctx, Meadplugin_Help_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -76,6 +88,7 @@ func (c *meadpluginClient) Insert(ctx context.Context, in *InsertRequest, opts .
 // for forward compatibility.
 type MeadpluginServer interface {
 	Identify(context.Context, *IdentifyRequest) (*IdentifyResponse, error)
+	Help(context.Context, *HelpRequest) (*HelpResponse, error)
 	Evaluate(context.Context, *EvaluateRequest) (*EvaluateResponse, error)
 	Insert(context.Context, *InsertRequest) (*InsertResponse, error)
 	mustEmbedUnimplementedMeadpluginServer()
@@ -90,6 +103,9 @@ type UnimplementedMeadpluginServer struct{}
 
 func (UnimplementedMeadpluginServer) Identify(context.Context, *IdentifyRequest) (*IdentifyResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Identify not implemented")
+}
+func (UnimplementedMeadpluginServer) Help(context.Context, *HelpRequest) (*HelpResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Help not implemented")
 }
 func (UnimplementedMeadpluginServer) Evaluate(context.Context, *EvaluateRequest) (*EvaluateResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Evaluate not implemented")
@@ -132,6 +148,24 @@ func _Meadplugin_Identify_Handler(srv interface{}, ctx context.Context, dec func
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
 		return srv.(MeadpluginServer).Identify(ctx, req.(*IdentifyRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Meadplugin_Help_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(HelpRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MeadpluginServer).Help(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Meadplugin_Help_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MeadpluginServer).Help(ctx, req.(*HelpRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -182,6 +216,10 @@ var Meadplugin_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "Identify",
 			Handler:    _Meadplugin_Identify_Handler,
+		},
+		{
+			MethodName: "Help",
+			Handler:    _Meadplugin_Help_Handler,
 		},
 		{
 			MethodName: "Evaluate",
