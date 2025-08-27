@@ -2,8 +2,10 @@ package rule
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"maps"
+	"strconv"
 
 	"github.com/CurtTilmes/meadplugin"
 )
@@ -34,6 +36,15 @@ func Register(rule string, evalfunc EvaluationFunction, shorthelp string, longhe
 		ShortHelp: shorthelp,
 		LongHelp:  longhelp,
 	}
+}
+
+func ParamInt(params Params, key string) (val int, err error) {
+	str, ok := params[key]
+	if !ok {
+		return 0, fmt.Errorf("%s not found", key)
+	}
+
+	return strconv.Atoi(str)
 }
 
 // Make a new response
