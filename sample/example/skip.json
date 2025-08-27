@@ -1,0 +1,7 @@
+{
+    "rule": "samplerule",
+    "params":
+    {
+        "skipthisone": "should never run for some reason"
+    }
+}

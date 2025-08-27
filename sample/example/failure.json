@@ -1,0 +1,7 @@
+{
+    "rule": "samplerule",
+    "params":
+    {
+        "failure": "this is a normal failure"
+    }
+}

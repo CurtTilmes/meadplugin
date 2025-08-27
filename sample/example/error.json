@@ -1,0 +1,7 @@
+{
+    "rule": "samplerule",
+    "params":
+    {
+        "makeanerror" : "something"
+    }
+}

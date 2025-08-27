@@ -1,0 +1,7 @@
+{
+    "rule": "samplerule",
+    "params":
+    {
+        "panic": "intentionally crash the evaluator"
+    }
+}
