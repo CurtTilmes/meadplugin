@@ -12,7 +12,7 @@ described in this repository.
 The ```meadplugin.proto``` establishes the *contract* between MEAD and its plugins.  The protocol is 
 summarized here, but the details in that file define the protocol precisely.
 
-MEAD plugins can be developed in any language as long as the comply with the gRPC/protobuf/meadplugin protocol.
+MEAD plugins can be developed in any language as long as they comply with the gRPC/protobuf/meadplugin protocol.
 
 The tool [gRPCurl](https://github.com/fullstorydev/grpcurl) can be useful in development and testing MEAD plugins.
 
