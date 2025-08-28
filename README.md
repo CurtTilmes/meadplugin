@@ -113,7 +113,7 @@ data were not captured by the observatory due to some maneuver, or land processi
 performed, but the tile is all water, or daytime processing is needed, but the data are all night.)
 This is a perfectly normal response, and will cause the Job to go immediately to the complete state.
 
-If some data needed by the rule is unavailable, but may become available later, ```RETRY``` is
+If some data needed by the rule are unavailable, but may become available later, ```RETRY``` is
 returned. 
 
 If something is required by the rule, but is unavailable and will NEVER become available ```FAILURE```
