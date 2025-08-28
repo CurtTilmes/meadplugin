@@ -23,10 +23,10 @@ to interact with the sample plugin:
 
 ```
 make describe                              # Describe the meadplugin services
-make start                                 # Start the sample server
-make identify                              # Call the sample service Identify service
-make help                                  # Call the sample service Help service
-make evaluate < sample/example/ex1.json    # Call the sample service Evaluate service with one of the example calls
+make sample_go                             # Start the sample Go server
+make identify                              # Call the sample Identify service
+make help                                  # Call the sample Help service
+make evaluate < sample/example/ex1.json    # Call the sample Evaluate service with one of the example calls
 ```
 
 ## Identify

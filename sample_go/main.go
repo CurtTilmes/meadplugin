@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/CurtTilmes/meadplugin/go/server"
-	_ "github.com/CurtTilmes/meadplugin/sample/rule" // Register rules
+	_ "github.com/CurtTilmes/meadplugin/sample_go/rule" // Register rules
 )
 
 func main() {
