@@ -12,7 +12,7 @@ protoc:
 	go install google.golang.org/grpc/cmd/protoc-gen-go-grpc@latest
 
 python:
-	protoc --python_out=. --pyi_out=. meadplugin.proto
+	grpc_tools.protoc -I. --python_out=. --pyi_out=. --grpc_python_out=. meadplugin.proto
 
 start:
 	go run ./sample/ $(DEFAULTLISTEN)
