@@ -141,6 +141,20 @@ and adding files to return.
 
 To create a new MEAD plugin in Go, start with those files.
 
+# Building a MEAD Plugin in Python
+
+The top level directory includes basic gRPC boilerplate for constructing a ```meadplugin```.
+
+The python envrionment needs to have the grpcio-tools installed to generate the python code from the meadplugin.proto:
+$ pip install grpcio-tools
+$ python -m grpc_tools.protoc -I. --python_out=. --pyi_out=. --grpc_python_out=. meadplugin.proto
+
+The ```python``` subdirectory includes files needed to build and run a meadplugin. The ```meadplugin_sample_server```
+is provided along with the gRPC automatically generated python code based on the ```meadplugin.proto``` definition
+file.  The ```mead_plugin_sample``` client can be used to query the ```meadplugin_sample_server``` to provide 
+a similar response as one would obtain from the Go version of the meadplugin. The subdirectories contain python
+files to configure the server and rules used by the plugin. By default, the Python sample server listens to port 50050.
+
 # License
 Copyright © 2025 United States Government as represented by the Administrator 
 of the National Aeronautics and Space Administration. No copyright is claimed 

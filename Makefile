@@ -8,7 +8,8 @@ go:
     meadplugin.proto
 
 python:
-	grpc_tools.protoc -I. --python_out=. --pyi_out=. --grpc_python_out=. meadplugin.proto
+	pip install grpcio-tools
+	python -m grpc_tools.protoc -I. --python_out=. --pyi_out=. --grpc_python_out=. meadplugin.proto
 
 protoc:
 	go install google.golang.org/protobuf/cmd/protoc-gen-go@latest
