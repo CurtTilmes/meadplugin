@@ -8,7 +8,7 @@ go:
     meadplugin.proto
 
 python:
-	pip install grpcio-tools
+	pip install grpcio grpcio-tools protobuf 
 	python -m grpc_tools.protoc -I. --python_out=. --pyi_out=. --grpc_python_out=. meadplugin.proto
 
 protoc:
