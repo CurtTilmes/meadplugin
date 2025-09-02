@@ -1,0 +1,66 @@
+syntax = "proto3";
+
+option go_package = ".;meadplugin";
+
+package meadplugin;
+
+service meadplugin {
+  rpc Identify (IdentifyRequest) returns (IdentifyResponse) {}
+  rpc Help (HelpRequest) returns (HelpResponse) {}
+  rpc Evaluate (EvaluateRequest) returns (EvaluateResponse) {}
+  rpc Insert (InsertRequest) returns (InsertResponse) {}
+}
+
+message IdentifyRequest {
+}
+
+message IdentifyResponse {
+  string name = 1;
+  string version = 2;
+  repeated string rules = 3;
+}
+
+message HelpRequest {
+  string request_id = 1;
+  string rule = 2;
+}
+
+message HelpResponse {
+  string short = 1;
+  string long = 2;
+}
+
+message EvaluateRequest {
+  string request_id = 1;
+  string rule = 2;
+  map<string,string> params = 3;
+}
+
+enum RuleStatus {
+  RULE_STATUS_UNSPECIFIED = 0;
+  RULE_STATUS_SUCCESS = 1; 
+  RULE_STATUS_FAILURE = 2;
+  RULE_STATUS_RETRY = 3;
+  RULE_STATUS_SKIP = 4;
+}
+
+message Item {
+  string id = 1;
+  map<string,string> metadata = 2;
+}
+
+message EvaluateResponse {
+  RuleStatus status = 1;
+  string message = 2;
+  map<string,string> params = 3;
+  repeated Item items = 4;
+}
+
+message InsertRequest {
+  repeated Item items = 1;
+}
+
+message InsertResponse {
+  string status = 1;
+  string message = 2;
+}
